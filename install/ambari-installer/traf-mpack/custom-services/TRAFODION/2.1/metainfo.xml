@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- reference common-services -->
+<metainfo>
+  <schemaVersion>2.0</schemaVersion>
+  <services>
+    <service>
+       <name>TRAFODION</name>
+       <extends>common-services/TRAFODION/2.1</extends>
+       <version>2.1</version>
+    </service>
+  </services>
+</metainfo>

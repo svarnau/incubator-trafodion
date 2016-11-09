@@ -1,0 +1,5 @@
+    <repo>
+       <baseurl>REPLACE_WITH_REPO_URL</baseurl>
+       <repoid>Trafodion</repoid>
+       <reponame>Trafodion</reponame>
+    </repo>
