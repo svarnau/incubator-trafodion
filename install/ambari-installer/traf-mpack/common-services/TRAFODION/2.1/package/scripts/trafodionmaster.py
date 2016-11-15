@@ -15,18 +15,20 @@ class Master(Script):
   #To stop the service, use the linux service stop command and pipe output to log file
   def stop(self, env):
     import params
-    Execute('sqstop',user=params.traf_user)
+    Execute('source ~/.bashrc ; sqstop',user=params.traf_user)
 
   #To start the service, use the linux service start command and pipe output to log file      
   def start(self, env):
     import params
-    Execute('sqgen',user=params.traf_user)
-    Execute('sqstart',user=params.traf_user)
+
+    Execute('source ~/.bashrc ; sqgen',user=params.traf_user)
+
+    Execute('source ~/.bashrc ; sqstart',user=params.traf_user)
 	
   #To get status of the, use the linux service status command      
   def status(self, env):
     import params
-    Execute('sqcheck -f',user=params.traf_user)
+    Execute('source ~/.bashrc ; sqcheck -f',user=params.traf_user)
  
   def initialize(self, env):
     ########################## TBD
