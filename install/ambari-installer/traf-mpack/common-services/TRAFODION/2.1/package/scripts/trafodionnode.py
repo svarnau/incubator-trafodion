@@ -61,7 +61,7 @@ class Node(Script):
     return True
 	
   def status(self, env):
-    Execute('sqcheck -f',user=params.traf_user)
+    Execute('source ~/.bashrc ; sqcheck -f',user=params.traf_user)
 
 if __name__ == "__main__":
   Node().execute()
