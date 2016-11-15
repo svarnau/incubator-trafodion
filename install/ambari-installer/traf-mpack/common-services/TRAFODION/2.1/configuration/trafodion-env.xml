@@ -46,15 +46,6 @@
     </value-attributes>
   </property>
   <property>
-    <name>traf.conf.dir</name>
-    <display-name>Trafodion Configuration Directory</display-name>
-    <value>/etc/trafodion/conf</value>
-    <description>Location of trafodion config files</description>
-    <value-attributes>
-      <type>directory</type>
-    </value-attributes>
-  </property>
-  <property>
     <name>traf.sshkey.priv</name>
     <display-name>Generated SSH Key</display-name>
 <!--TRAFODION-GENERATED-SSH-KEY--><value>
@@ -69,13 +60,25 @@
     <display-name>trafodion-env template</display-name>
     <description>Template for trafodion-env.sh file</description>
     <value>
+# sourced from /etc/trafodion/trafodion_config
+# pre-req: SQ_HOME set to install path
 export JAVA_HOME={{java_home}}
+
+export TRAF_USER={{traf_user}}
+export MY_SQROOT="$SQ_HOME"
+
 export DCS_SERVERS_PARM={{dcs_servers}}
 export DCS_PORT={{dcs_port}}
 export DCS_INFO_PORT={{dcs_info_port}}
+#export ENABLE_HA="{{ enable_ha }}"
+
 export DB_ADMIN_USER={{traf_db_admin}}
-export TRAF_USER={{traf_user}}
-export MY_NODES="{{traf_nodes}}"
+
+export NODE_LIST="{{traf_nodes}}"
+export MY_NODES="{{traf_w_nodes}}"
+export node_count="{{traf_node_count}}"
+
+export HADOOP_TYPE="hortonworks"
 
   
     </value>
