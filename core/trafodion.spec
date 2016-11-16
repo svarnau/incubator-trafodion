@@ -98,7 +98,7 @@ if ! getent passwd trafodion > /dev/null
 then
   /usr/sbin/useradd --shell /bin/bash -m trafodion -g trafodion --home /home/trafodion > /dev/null 2>&1
 fi
-chmod o+rx /home/trafodion
+chmod go+rx /home/trafodion
 
 
 %build
