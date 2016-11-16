@@ -54,6 +54,20 @@ class Node(Script):
          content=sshopt,
          mode=0600)
 
+    # Link TRX files into HBase lib dir
+    hlib = "/usr/hdp/current/hbase-regionserver/lib/"
+    trx = "$SQ_HOME/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
+    util = "$SQ_HOME/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
+
+    cmd = "rm -f " + hlib + "hbase-trx-* " + hlib + "trafodion-utility-*"
+    Execute(cmd)
+
+    # run as root, but expand variables using trafodion env
+    cmd = "source ~" + user=params.traf_user + "/.bashrc ; ln -s " + trx + " " + hlib
+    Execute(cmd)
+    cmd = "source ~" + user=params.traf_user + "/.bashrc ; ln -s " + util + " " + hlib
+    Execute(cmd)
+
   def stop(self, env):
     return True
 

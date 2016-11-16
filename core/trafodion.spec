@@ -123,7 +123,7 @@ echo "source /etc/trafodion/conf/trafodion-env.sh" >> /etc/trafodion/trafodion_c
 
 %files
 /etc/sudoers.d/trafodion
-/etc/security/limits.d/trafodion
+/etc/security/limits.d/trafodion.conf
 %defattr(-,trafodion,trafodion)
 /home/trafodion/.bashrc
 /home/trafodion/%{name}-%{version}
