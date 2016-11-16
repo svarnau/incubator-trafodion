@@ -63,9 +63,9 @@ class Node(Script):
     Execute(cmd)
 
     # run as root, but expand variables using trafodion env
-    cmd = "source ~" + user=params.traf_user + "/.bashrc ; ln -s " + trx + " " + hlib
+    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -s " + trx + " " + hlib
     Execute(cmd)
-    cmd = "source ~" + user=params.traf_user + "/.bashrc ; ln -s " + util + " " + hlib
+    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -s " + util + " " + hlib
     Execute(cmd)
 
   def stop(self, env):
