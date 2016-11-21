@@ -45,23 +45,22 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
         if {"name": "HBASE_REGIONSERVER"} not in hostComponents and {"name": "TRAF_NODE"} in hostComponents:
           hostComponents.remove({"name": "TRAF_NODE"})
 
-    # Co-locate TRAF_MASTER on a TRAF_NODE
-
     # Place TRAF_DCS_SECOND on different nodes from TRAF_DCS_PRIME
-    #dcsS = [component for component in serviceComponents if component["StackServiceComponents"]["component_name"] == "TRAF_DCS_SECOND"][0]
-    #if self.isComponentHostsPopulated(dcsS):
-    #  for hostName in hostsComponentsMap.keys():
-    #     hostComponents = hostsComponentsMap[hostName]
-    #     if {"name": "TRAF_DCS_PRIME"} in hostComponents and {"name": "TRAF_DCS_SECOND"} in hostComponents:
-    #        hostComponents.remove({"name": "TRAF_DCS_SECOND"})
-
+    dcsS = [component for component in serviceComponents if component["StackServiceComponents"]["component_name"] == "TRAF_DCS_SECOND"][0]
+    if not self.isComponentHostsPopulated(dcsS):
+      placed = False
+      for hostName in hostsComponentsMap.keys():
+         hostComponents = hostsComponentsMap[hostName]
+         if {"name": "TRAF_DCS_PRIME"} in hostComponents and {"name": "TRAF_DCS_SECOND"} in hostComponents:
+            hostComponents.remove({"name": "TRAF_DCS_SECOND"})
+         if {"name": "TRAF_DCS_PRIME"} not in hostComponents and not placed:
+            hostsComponentsMap[hostName].append( { "name": "TRAF_DCS_SECOND" } )
+            placed = True
 
  
   def getServiceComponentLayoutValidations(self, services, hosts):
     componentsListList = [service["components"] for service in services["services"]]
     componentsList = [item["StackServiceComponents"] for sublist in componentsListList for item in sublist]
-    #hostsList = [host["Hosts"]["host_name"] for host in hosts["items"]]
-    #hostsCount = len(hostsList)
 
     trafNodeHosts = self.getHosts(componentsList, "TRAF_NODE")
     regionHosts = self.getHosts(componentsList, "HBASE_REGIONSERVER")
