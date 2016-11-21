@@ -47,7 +47,7 @@
                   <displayName>Trafodion Node</displayName>
                   <category>SLAVE</category>
                   <!-- how many of these components are allowed in a cluster -->
-                  <cardinality>1-100</cardinality>
+                  <cardinality>1-1000</cardinality>
                   <!-- reference to (and details of) what script is to be used to install/stop/start/config the service -->
                   <commandScript>
                     <script>scripts/trafodionnode.py</script>
@@ -73,7 +73,7 @@
                   <displayName>Trafodion DCS Backup</displayName>
                   <category>MASTER</category>
                   <!-- how many of these components are allowed in a cluster -->
-                  <cardinality>0-1</cardinality>
+                  <cardinality>0-10</cardinality>
                   <!-- reference to (and details of) what script is to be used to install/stop/start/config the service -->
                   <commandScript>
                     <script>scripts/trafodiondcs.py</script>
