@@ -96,7 +96,87 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     return items
  
   def getServiceConfigurationRecommendations(self, configurations, clusterSummary, services, hosts):
-    pass
+    # Update HBASE properties in hbase-site
+    if "hbase-site" in services["configurations"]:
+      hbase_site = services["configurations"]["hbase-site"]["properties"]
+      putHbaseSiteProperty = self.putProperty(configurations, "hbase-site", services)
+
+      for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
+        if property not in hbase_site or hbase_site[property] != desired_value:
+          putHbaseSiteProperty(property, desired_value)
+
+   # Update HDFS properties in hdfs-site
+    if "hdfs-site" in services["configurations"]:
+      hdfs_site = services["configurations"]["hdfs-site"]["properties"]
+      putHdfsSiteProperty = self.putProperty(configurations, "hdfs-site", services)
+
+      for property, desired_value in self.getHdfsSiteDesiredValues().iteritems():
+        if property not in hdfs_site or hdfs_site[property] != desired_value:
+          putHdfsSiteProperty(property, desired_value)
+
+    # Update ZOOKEEPER properties in zoo.cfg
+    if "zoo.cfg" in services["configurations"]:
+      zoo_cfg = services["configurations"]["zoo.cfg"]["properties"]
+      putZooCfgProperty = self.putProperty(configurations, "zoo.cfg", services)
+
+      for property, desired_value in self.getZooCfgDesiredValues().iteritems():
+        if property not in zoo_cfg or zoo_cfg[property] != desired_value:
+          putZooCfgProperty(property, desired_value)
+
  
   def getServiceConfigurationsValidationItems(self, configurations, recommendedDefaults, services, hosts):
-    return []
+    items = []
+
+    val_items = []
+    cfg = configurations["hbase-site"]["properties"]
+    for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
+       if property not in cfg or cfg[property] != desired_value:
+          message = "Trafodion recommends value of " + desired_value
+          val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+    items.extend(self.toConfigurationValidationProblems(val_items, "hbase-site"))
+
+    val_items = []
+    cfg = configurations["hdfs-site"]["properties"]
+    for property, desired_value in self.getHdfsSiteDesiredValues().iteritems():
+       if property not in cfg or cfg[property] != desired_value:
+          message = "Trafodion recommends value of " + desired_value
+          val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+    items.extend(self.toConfigurationValidationProblems(val_items, "hdfs-site"))
+
+    val_items = []
+    cfg = configurations["zoo.cfg"]["properties"]
+    for property, desired_value in self.getZooCfgDesiredValues().iteritems():
+       if property not in cfg or cfg[property] != desired_value:
+          message = "Trafodion recommends value of " + desired_value
+          val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+    items.extend(self.toConfigurationValidationProblems(val_items, "zoo.cfg"))
+
+    return items
+
+##### Desired values in other service configs
+  def getHbaseSiteDesiredValues(self):
+    desired = {
+        "hbase.master.distributed.log.splitting": "false",
+        "hbase.snapshot.master.timeoutMillis": "600000",
+        "hbase.coprocessor.region.classes": "org.apache.hadoop.hbase.coprocessor.transactional.TrxRegionObserver,org.apache.hadoop.hbase.coprocessor.transactional.TrxRegionEndpoint,org.apache.hadoop.hbase.coprocessor.AggregateImplementation",
+        "hbase.hregion.impl": "org.apache.hadoop.hbase.regionserver.transactional.TransactionalRegion",
+        "hbase.regionserver.region.split.policy": "org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy",
+        "hbase.snapshot.enabled": "true",
+        "hbase.bulkload.staging.dir": "/hbase-staging",
+        "hbase.regionserver.region.transactional.tlog": "true",
+        "hbase.snapshot.region.timeout": "600000",
+        "hbase.client.scanner.timeout.period": "600000"
+    }
+    return desired
+
+  def getHdfsSiteDesiredValues(self):
+    desired = {
+        "dfs.namenode.acls.enabled": "true"
+    }
+    return desired
+
+  def getZooCfgDesiredValues(self):
+    desired = {
+        "maxClientCnxns": "0"
+    }
+    return desired
