@@ -73,7 +73,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     mismatchHosts = sorted(set(trafNodeHosts).symmetric_difference(set(dataHosts)))
     if len(mismatchHosts) > 0:
       hostsString = ', '.join(mismatchHosts)
-      message = "Trafodion Nodes should be installed on all HDFS Data Nodes. " \
+      message = "Trafodion Nodes should be co-located with HDFS Data Nodes. " \
                 "{0} host(s) do not satisfy the colocation recommendation: {1}".format(len(mismatchHosts), hostsString)
       items.append( { "type": 'host-component', "level": 'WARN', "message": message, "component-name": 'TRAF_NODE' } )
 
@@ -81,7 +81,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     mismatchHosts = sorted(set(trafNodeHosts).symmetric_difference(set(regionHosts)))
     if len(mismatchHosts) > 0:
       hostsString = ', '.join(mismatchHosts)
-      message = "Trafodion Nodes should be installed on all HBase Region Servers. " \
+      message = "Trafodion Nodes should be co-located with HBase Region Servers. " \
                 "{0} host(s) do not satisfy the colocation recommendation: {1}".format(len(mismatchHosts), hostsString)
       items.append( { "type": 'host-component', "level": 'WARN', "message": message, "component-name": 'TRAF_NODE' } )
 
