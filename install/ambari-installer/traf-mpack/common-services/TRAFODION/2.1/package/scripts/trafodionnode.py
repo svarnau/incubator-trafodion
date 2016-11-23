@@ -8,13 +8,10 @@ class Node(Script):
   
     # Install packages listed in metainfo.xml
     self.install_packages(env)
-    self.configure(env)
     import params
   
     self.configure(env)
  
-    #if any other install steps were needed they can be added here
-
   def configure(self, env):
     import params
     env.set_params(params)
