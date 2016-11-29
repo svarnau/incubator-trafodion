@@ -22,3 +22,4 @@ traf_nodes = ' '.join(traf_node_list)
 traf_w_nodes = '-w ' + ' -w '.join(traf_node_list)
 traf_node_count = len(traf_node_list)
 
+traf_scratch = config['configurations']['trafodion-env']['traf.node.dir']
