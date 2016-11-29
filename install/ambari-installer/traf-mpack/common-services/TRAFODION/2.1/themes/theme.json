@@ -64,15 +64,11 @@
          "subsection-name": "DCS-1"
         },
         {
-         "config": "trafodion-env/dcs.port",
-         "subsection-name": "DCS-1"
-        },
-        {
-         "config": "trafodion-env/dcs.info.port",
-         "subsection-name": "DCS-1"
-        },
-        {
          "config": "trafodion-env/traf.db.admin",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.node.dir",
          "subsection-name": "database-1"
         }
       ]
@@ -85,16 +81,12 @@
          }
         },
         {
-         "config": "trafodion-env/dcs.port",
+         "config": "trafodion-env/traf.db.admin",
          "widget": { "type": "text-field"}
         },
         {
          "config": "trafodion-env/dcs.info.port",
-         "widget": { "type": "text-field"}
-        },
-        {
-         "config": "trafodion-env/traf.db.admin",
-         "widget": { "type": "text-field"}
+         "widget": { "type": "directories"}
         }
     ]
   }

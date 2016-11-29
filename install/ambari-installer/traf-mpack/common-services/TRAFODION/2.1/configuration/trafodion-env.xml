@@ -46,6 +46,15 @@
     </value-attributes>
   </property>
   <property>
+    <name>traf.node.dir</name>
+    <display-name>Trafodion local working directories</display-name>
+    <value>/hadoop/trafodion/work</value>
+    <description>List of directories (comma seperated) for trafodion scratch space</description>
+    <value-attributes>
+      <type>string</type>
+    </value-attributes>
+  </property>
+  <property>
     <name>traf.sshkey.priv</name>
     <display-name>Generated SSH Key</display-name>
 <!--TRAFODION-GENERATED-SSH-KEY--><value>

@@ -1,5 +1,6 @@
 import sys, os, subprocess
 from resource_management import *
+from tempfile import TemporaryFile
 
 class Master(Script):
   def install(self, env):
@@ -10,11 +11,11 @@ class Master(Script):
 
     # generate sqconfig file
     cmd = "lscpu|grep -E '(^CPU\(s\)|^Socket\(s\))'|awk '{print $2}'"
-    ###p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    ###stdout, stderr = p.communicate()
-
-    ###core, processor = stdout.strip().split('\n')[:2]
-    core, processor = as_user(cmd,params.traf_user).split('\n')[:2]
+    ofile = TemporaryFile()
+    Execute(cmd,stdout=ofile)
+    ofile.seek(0) # read from beginning
+    core, processor = ofile.read().split('\n')[:2]
+    ofile.close()
 
     core = int(core)-1 if int(core) <= 256 else 255
 
@@ -22,7 +23,11 @@ class Master(Script):
     for node_id, node in enumerate(params.traf_node_list):
         # find the local hostname for each node
         cmd = "ssh %s hostname" % node
-        localhn = as_user(cmd,params.traf_user)
+        ofile = TemporaryFile()
+        Execute(cmd,user=params.traf_user,stdout=ofile)
+        ofile.seek(0) # read from beginning
+        localhn = ofile.readline().rstrip()
+        ofile.close()
  
         line = 'node-id=%s;node-name=%s;cores=0-%d;processors=%s;roles=connection,aggregation,storage\n' \
                  % (node_id, localhn, core, processor)
@@ -30,12 +35,11 @@ class Master(Script):
 
     lines.append('end node\n')
     lines.append('\n')
-    # To be added - need to set config value for scratch loc or pick data disk?
-    #lines.append('begin overflow\n')
-    #for scratch_loc in scratch_locs:
-    #    line = 'hdd %s\n' % scratch_loc
-    #    lines.append(line)
-    #lines.append('end overflow\n')
+    lines.append('begin overflow\n')
+    for scratch_loc in params.traf_scratch.split(','):
+        line = 'hdd %s\n' % scratch_loc
+        lines.append(line)
+    lines.append('end overflow\n')
 
     # write sqconfig in trafodion home dir
     trafhome = os.path.expanduser("~" + params.traf_user)

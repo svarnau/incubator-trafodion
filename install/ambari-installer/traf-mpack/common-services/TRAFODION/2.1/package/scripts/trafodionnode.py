@@ -11,6 +11,14 @@ class Node(Script):
     import params
   
     self.configure(env)
+
+    # create scratch dirs
+    for sdir in params.traf_scratch.split(','):
+      Directory(sdir,
+                mode=0777,
+                owner = params.traf_user,
+                group = params.traf_group,
+                create_parents = True)
  
   def configure(self, env):
     import params
