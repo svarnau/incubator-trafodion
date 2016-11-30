@@ -85,7 +85,7 @@
          "widget": { "type": "text-field"}
         },
         {
-         "config": "trafodion-env/dcs.info.port",
+         "config": "trafodion-env/traf.node.dir",
          "widget": { "type": "directories"}
         }
     ]

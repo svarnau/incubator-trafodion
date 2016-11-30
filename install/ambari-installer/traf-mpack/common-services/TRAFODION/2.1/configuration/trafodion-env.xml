@@ -9,7 +9,7 @@
     <name>dcs.servers</name>
     <display-name>Client Connection Servers</display-name>
     <value>16</value>
-    <description>The total number of concurrent DCS servers</description>
+    <description>The cluster-wide total number of concurrent DCS servers</description>
     <value-attributes>
       <type>int</type>
       <minimum>0</minimum>
@@ -82,10 +82,6 @@ export DCS_INFO_PORT={{dcs_info_port}}
 #export ENABLE_HA="{{ enable_ha }}"
 
 export DB_ADMIN_USER={{traf_db_admin}}
-
-export NODE_LIST="{{traf_nodes}}"
-export MY_NODES="{{traf_w_nodes}}"
-export node_count="{{traf_node_count}}"
 
 export HADOOP_TYPE="hortonworks"
 
