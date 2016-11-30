@@ -88,6 +88,11 @@
                 <fileName>trafodion-env.sh</fileName>
                 <dictionaryName>trafodion-env</dictionaryName>
               </configFile>
+              <configFile>
+                <type>env</type>
+                <fileName>cluster-env.sh</fileName>
+                <dictionaryName>traf-cluster-env</dictionaryName>
+              </configFile>
             </configFiles>
             <!-- what yum packages need to be installed -->
             <osSpecifics>

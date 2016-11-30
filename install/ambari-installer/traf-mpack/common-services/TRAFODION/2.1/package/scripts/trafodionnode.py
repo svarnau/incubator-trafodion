@@ -1,7 +1,5 @@
 import sys, os, pwd, signal, time
 from resource_management import *
-#from subprocess import call
-#from shutil import copyfile
 
 class Node(Script):
   def install(self, env):
@@ -12,7 +10,7 @@ class Node(Script):
   
     self.configure(env)
 
-    # create scratch dirs
+    # create trafodion scratch dirs
     for sdir in params.traf_scratch.split(','):
       Directory(sdir,
                 mode=0777,
@@ -22,21 +20,8 @@ class Node(Script):
  
   def configure(self, env):
     import params
-    env.set_params(params)
 
-    Directory(params.traf_conf_dir, 
-              mode=0755, 
-              owner = params.traf_user, 
-              group = params.traf_group, 
-              create_parents = True)
-    traf_conf_path = os.path.join(params.traf_conf_dir, "trafodion-env.sh")
-    File(traf_conf_path,
-         owner = params.traf_user, 
-         group = params.traf_user, 
-         content=InlineTemplate(params.traf_env_template,trim_blocks=False),
-         mode=0555)
-
-    # trafodion cluster-wide ssh
+    # trafodion cluster-wide ssh config
     trafhome = os.path.expanduser("~" + params.traf_user)
     Directory(os.path.join(trafhome,".ssh"), 
               mode=0700,
@@ -58,6 +43,20 @@ class Node(Script):
          group = params.traf_user, 
          content=sshopt,
          mode=0600)
+
+    # create env file
+    env.set_params(params)
+    Directory(params.traf_conf_dir, 
+              mode=0755, 
+              owner = params.traf_user, 
+              group = params.traf_group, 
+              create_parents = True)
+    traf_conf_path = os.path.join(params.traf_conf_dir, "trafodion-env.sh")
+    File(traf_conf_path,
+         owner = params.traf_user, 
+         group = params.traf_user, 
+         content=InlineTemplate(params.traf_env_template,trim_blocks=False),
+         mode=0644)
 
     # Link TRX files into HBase lib dir
     hlib = "/usr/hdp/current/hbase-regionserver/lib/"

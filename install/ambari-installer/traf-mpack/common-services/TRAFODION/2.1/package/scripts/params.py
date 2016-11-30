@@ -12,14 +12,35 @@ traf_db_admin = config['configurations']['trafodion-env']['traf.db.admin']
 
 traf_conf_dir = '/etc/trafodion/conf' # path is hard-coded in /etc/trafodion_trafodion_config
 traf_env_template = config['configurations']['trafodion-env']['content'] + '\n'
+traf_clust_template = config['configurations']['traf-cluster-env']['content'] + '\n'
 
 traf_user = 'trafodion'
 traf_group = 'trafodion'
+hdfs_user = config['configurations']['hadoop-env']['hdfs_user']
+hbase_user = config['configurations']['hbase-env']['hbase_user']
+
 traf_priv_key = config['configurations']['trafodion-env']['traf.sshkey.priv']
 
 traf_node_list = default("/clusterHostInfo/traf_node_hosts", '')
-traf_nodes = ' '.join(traf_node_list)
-traf_w_nodes = '-w ' + ' -w '.join(traf_node_list)
-traf_node_count = len(traf_node_list)
 
 traf_scratch = config['configurations']['trafodion-env']['traf.node.dir']
+
+#HDFS Dir creation
+hostname = config["hostname"]
+hadoop_conf_dir = "/etc/hadoop/conf"
+hdfs_user_keytab = config['configurations']['hadoop-env']['hdfs_user_keytab']
+security_enabled = config['configurations']['cluster-env']['security_enabled']
+kinit_path_local = functions.get_kinit_path(default('/configurations/kerberos-env/executable_search_paths', None))
+import functools
+#create partial functions with common arguments for every HdfsDirectory call
+#to create hdfs directory we need to call params.HdfsDirectory in code
+HdfsDirectory = functools.partial(
+  HdfsResource,
+  type="directory",
+  conf_dir=hadoop_conf_dir,
+  hdfs_user=hdfs_user,
+  security_enabled = security_enabled,
+  keytab = hdfs_user_keytab,
+  kinit_path_local = kinit_path_local
+)
+

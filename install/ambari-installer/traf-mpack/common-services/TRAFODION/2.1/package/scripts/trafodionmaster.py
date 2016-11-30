@@ -20,6 +20,7 @@ class Master(Script):
     core = int(core)-1 if int(core) <= 256 else 255
 
     lines = ['begin node\n']
+    loc_node_list = []
     for node_id, node in enumerate(params.traf_node_list):
         # find the local hostname for each node
         cmd = "ssh %s hostname" % node
@@ -32,6 +33,7 @@ class Master(Script):
         line = 'node-id=%s;node-name=%s;cores=0-%d;processors=%s;roles=connection,aggregation,storage\n' \
                  % (node_id, localhn, core, processor)
         lines.append(line)
+        loc_node_list.append(localhn)
 
     lines.append('end node\n')
     lines.append('\n')
@@ -50,10 +52,41 @@ class Master(Script):
          mode=0644)
 
     # install sqconfig
-    Execute('source ~/.bashrc ; cp -f ~/sqconfig $MY_SQROOT/sql/scripts/',user=params.traf_user)
+    Execute('source ~/.bashrc ; mv -f ~/sqconfig $MY_SQROOT/sql/scripts/',user=params.traf_user)
+
+    # write cluster-env in trafodion home dir
+    traf_nodes = ' '.join(loc_node_list)
+    traf_w_nodes = '-w ' + ' -w '.join(loc_node_list)
+    traf_node_count = len(loc_node_list)
+    if traf_node_count != len(traf_node_list):
+      print "Error cannot determine local hostname for all Trafodion nodes"
+      exit 1
+
+    cl_env_temp = os.path.join(trafhome,"cluster-env.sh")
+    File(cl_env_temp,
+         owner = params.traf_user,
+         group = params.traf_user,
+         content=InlineTemplate(params.traf_clust_template,trim_blocks=False),
+         mode=0644)
+
+    # install cluster-env on all nodes
+    for node in params.traf_node_list:
+        cmd = "scp %s %s:%s/" % (cl_env_temp, node, params.traf_conf_dir)
+        Execute(cmd,user=params.traf_user)
+    cmd = "rm -f %s" % (cl_env_temp)
+    Execute(cmd,user=params.traf_user)
 
     # Execute SQ gen
     Execute('source ~/.bashrc ; sqgen',user=params.traf_user)
+
+    ### Experimental
+    params.HdfsDirectory("/hbase/archive",
+                         action="create_delayed",
+                         owner=params.hbase_user,
+                         group=params.hbase_user,
+                        )
+    params.HdfsDirectory(None, action="create")
+
 
   #To stop the service, use the linux service stop command and pipe output to log file
   def stop(self, env):
@@ -64,6 +97,20 @@ class Master(Script):
   def start(self, env):
     import params
 
+    # Check HDFS set up
+    # Must be in start section, since we need HDFS running
+    params.HdfsDirectory("/hbase/archive",
+                         action="create_delayed",
+                         owner=params.hbase_user,
+                         group=params.hbase_user,
+                        )
+    # To Be Added: 
+    #   /hbase-staging
+    #   /user/trafodion//{trafodion_backups,bulkload,lobs}
+    # ACLs for /hbase/archive
+    params.HdfsDirectory(None, action="create")
+
+    # Start trafodion
     Execute('source ~/.bashrc ; sqstart',user=params.traf_user)
 	
   #To get status of the, use the linux service status command      
