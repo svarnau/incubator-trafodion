@@ -60,7 +60,7 @@
       "configuration-layout": "default",
       "configs": [
         {
-         "config": "trafodion-env/dcs.servers",
+         "config": "dcs-env/dcs.servers",
          "subsection-name": "DCS-1"
         },
         {
@@ -75,7 +75,7 @@
     },
     "widgets": [
         {
-         "config": "trafodion-env/dcs.servers",
+         "config": "dcs-env/dcs.servers",
          "widget": { "type": "slider",
                      "units": [ { "unit-name": "Servers"} ]
          }

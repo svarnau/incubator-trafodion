@@ -6,37 +6,6 @@
   <!-- Define configuration paramaters for service: property name, default value and description (shown as help text) -->
   
   <property>
-    <name>dcs.servers</name>
-    <display-name>Client Connection Servers</display-name>
-    <value>16</value>
-    <description>The cluster-wide total number of concurrent DCS servers</description>
-    <value-attributes>
-      <type>int</type>
-      <minimum>0</minimum>
-      <maximum>256</maximum>
-      <unit>Servers</unit>
-      <increment-step>4</increment-step>
-    </value-attributes>
-  </property>
-  <property>
-    <name>dcs.port</name>
-    <display-name>DCS Master Port</display-name>
-    <value>23400</value>
-    <description>Client Connection Port</description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-  <property>
-    <name>dcs.info.port</name>
-    <display-name>DCS Info Port</display-name>
-    <value>24400</value>
-    <description>Client Connection Info Port</description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-  <property>
     <name>traf.db.admin</name>
     <display-name>Trafodion DB Admin User</display-name>
     <value>DB__ADMINUSER</value>
@@ -75,11 +44,6 @@ export JAVA_HOME={{java_home}}
 
 export TRAF_USER={{traf_user}}
 export MY_SQROOT="$SQ_HOME"
-
-export DCS_SERVERS_PARM={{dcs_servers}}
-export DCS_PORT={{dcs_port}}
-export DCS_INFO_PORT={{dcs_info_port}}
-#export ENABLE_HA="{{ enable_ha }}"
 
 export DB_ADMIN_USER={{traf_db_admin}}
 

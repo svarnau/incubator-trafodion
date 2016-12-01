@@ -130,25 +130,9 @@ fi
 mkdir -p $DCS_INSTALL_PATH
 cd $DCS_INSTALL_PATH
 
-if [[ "$ONE_TAR_INSTALL" == "Y" ]]; then
-   DCS_DIR=$(ls $SQ_ROOT | grep dcs)
-   DCS_DIR=$SQ_ROOT/$DCS_DIR
-   echo "***INFO: DCS Install Directory: $DCS_DIR"
-else
-   # untar DCS build into install directory
-   echo "***INFO: untarring build file $DCS_BUILD_FILE"
-   tar -xzf $DCS_BUILD_FILE
-
-   # get the dcs install directory name which is imbedded in the tar file
-   DCS_DIR=$(tar -tf $DCS_BUILD_FILE | grep --max-count=1 bin | sed -e "s@\(^.*\)/bin/@\1@")
-
-   DCS_DIR=$DCS_INSTALL_PATH/$DCS_DIR
-fi
-
-# set env var in sqenvcom.sh for DCS install directory
-grep --invert-match "DCS_INSTALL_DIR=" $MY_SQROOT/sqenvcom.sh > $MY_SQROOT/sqenvcom.temp
-echo "export DCS_INSTALL_DIR=$DCS_DIR" >> $MY_SQROOT/sqenvcom.temp
-mv $MY_SQROOT/sqenvcom.temp $MY_SQROOT/sqenvcom.sh
+DCS_DIR=$(ls $SQ_ROOT | grep dcs)
+DCS_DIR=$SQ_ROOT/$DCS_DIR
+echo "***INFO: DCS Install Directory: $DCS_DIR"
 
 cd $DCS_DIR/conf
 

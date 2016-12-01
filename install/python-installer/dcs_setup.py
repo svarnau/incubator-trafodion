@@ -35,9 +35,6 @@ def run():
     TRAF_VER = dbcfgs['traf_version']
     HBASE_XML_FILE = dbcfgs['hbase_xml_file']
 
-    DCS_INSTALL_ENV = 'export DCS_INSTALL_DIR=%s/dcs-%s' % (SQ_ROOT, TRAF_VER)
-    REST_INSTALL_ENV = 'export REST_INSTALL_DIR=%s/rest-%s' % (SQ_ROOT, TRAF_VER)
-
     DCS_CONF_DIR = '%s/dcs-%s/conf' % (SQ_ROOT, TRAF_VER)
     DCS_SRV_FILE = DCS_CONF_DIR + '/servers'
     DCS_MASTER_FILE = DCS_CONF_DIR + '/master'
@@ -46,7 +43,6 @@ def run():
     DCS_SITE_FILE = DCS_CONF_DIR + '/dcs-site.xml'
     REST_SITE_FILE = '%s/rest-%s/conf/rest-site.xml' % (SQ_ROOT, TRAF_VER)
     TRAFCI_FILE = SQ_ROOT + '/trafci/bin/trafci'
-    SQENV_FILE = SQ_ROOT + '/sqenvcom.sh'
 
     ### dcs setting ###
     # servers
@@ -62,10 +58,6 @@ def run():
     # modify master
     dcs_master = nodes[0]
     append_file(DCS_MASTER_FILE, dcs_master)
-
-    # modify sqenvcom.sh
-    append_file(SQENV_FILE, DCS_INSTALL_ENV)
-    append_file(SQENV_FILE, REST_INSTALL_ENV)
 
     # modify dcs-env.sh
     mod_file(DCS_ENV_FILE, {'.*DCS_MANAGES_ZK=.*':'export DCS_MANAGES_ZK=false'})

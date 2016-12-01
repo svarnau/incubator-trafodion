@@ -107,17 +107,17 @@ class Master(Script):
     params.HdfsDirectory("/user/trafodion/trafodion_backups",
                          action="create_on_execute",
                          owner=params.traf_user,
-                         group=params.traf_user,
+                         group=params.traf_group,
                         )
     params.HdfsDirectory("/user/trafodion/bulkload",
                          action="create_on_execute",
                          owner=params.traf_user,
-                         group=params.traf_user,
+                         group=params.traf_group,
                         )
     params.HdfsDirectory("/user/trafodion/lobs",
                          action="create_on_execute",
                          owner=params.traf_user,
-                         group=params.traf_user,
+                         group=params.traf_group,
                         )
     params.HdfsDirectory(None, action="execute")
     cmd = "hdfs dfs -setfacl -R -m user:%s:rwx,default:user:%s:rwx,mask::rwx /hbase/archive" % 
