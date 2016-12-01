@@ -44,7 +44,7 @@ class Node(Script):
          content=sshopt,
          mode=0600)
 
-    # create env file
+    # create env files
     env.set_params(params)
     Directory(params.traf_conf_dir, 
               mode=0755, 
@@ -57,6 +57,17 @@ class Node(Script):
          group = params.traf_user, 
          content=InlineTemplate(params.traf_env_template,trim_blocks=False),
          mode=0644)
+    # cluster file will be over-written by trafodionmaster install
+    # until then, make file that shell can source without error
+    traf_conf_path = os.path.join(params.traf_conf_dir, "traf-cluster-env.sh")
+    File(traf_conf_path,
+         owner = params.traf_user, 
+         group = params.traf_user, 
+         content="# place-holder",
+         mode=0644)
+    # initialize & verify env (e.g., creates $SQROOT/tmp as trafodion user)
+    cmd = "source ~/.bashrc"
+    Execute(cmd,user=params.traf_user)
 
     # Link TRX files into HBase lib dir
     hlib = "/usr/hdp/current/hbase-regionserver/lib/"
@@ -79,6 +90,7 @@ class Node(Script):
     return True
 	
   def status(self, env):
+    import params
     Execute('source ~/.bashrc ; sqcheck -f',user=params.traf_user)
 
 if __name__ == "__main__":

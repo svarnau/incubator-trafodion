@@ -4,7 +4,7 @@
 <configuration supports_final="false">
   <property>
     <name>content</name>
-    <display-name>cluster-env template</display-name>
+    <display-name>traf-cluster-env template</display-name>
     <description>Template for cluster-env.sh file</description>
     <value>
 export NODE_LIST="{{traf_nodes}}"
