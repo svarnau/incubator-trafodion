@@ -31,14 +31,18 @@ hadoop_conf_dir = "/etc/hadoop/conf"
 hdfs_user_keytab = config['configurations']['hadoop-env']['hdfs_user_keytab']
 security_enabled = config['configurations']['cluster-env']['security_enabled']
 kinit_path_local = functions.get_kinit_path(default('/configurations/kerberos-env/executable_search_paths', None))
+hdfs_site = config['configurations']['hdfs-site']
+default_fs = config['configurations']['core-site']['fs.defaultFS']
 import functools
 #create partial functions with common arguments for every HdfsDirectory call
 #to create hdfs directory we need to call params.HdfsDirectory in code
 HdfsDirectory = functools.partial(
   HdfsResource,
   type="directory",
-  conf_dir=hadoop_conf_dir,
-  hdfs_user=hdfs_user,
+  hadoop_conf_dir=hadoop_conf_dir,
+  user=hdfs_user,
+  hdfs_site=hdfs_site,
+  default_fs=default_fs,
   security_enabled = security_enabled,
   keytab = hdfs_user_keytab,
   kinit_path_local = kinit_path_local

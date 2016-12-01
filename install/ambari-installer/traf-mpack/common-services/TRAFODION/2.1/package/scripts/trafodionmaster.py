@@ -58,15 +58,18 @@ class Master(Script):
     traf_nodes = ' '.join(loc_node_list)
     traf_w_nodes = '-w ' + ' -w '.join(loc_node_list)
     traf_node_count = len(loc_node_list)
-    if traf_node_count != len(traf_node_list):
+    if traf_node_count != len(params.traf_node_list):
       print "Error cannot determine local hostname for all Trafodion nodes"
-      exit 1
+      exit(1)
 
-    cl_env_temp = os.path.join(trafhome,"cluster-env.sh")
+    cl_env_temp = os.path.join(trafhome,"traf-cluster-env.sh")
     File(cl_env_temp,
          owner = params.traf_user,
          group = params.traf_user,
-         content=InlineTemplate(params.traf_clust_template,trim_blocks=False),
+         content=InlineTemplate(params.traf_clust_template,
+                                traf_nodes=traf_nodes,
+                                traf_w_nodes=traf_w_nodes,
+                                traf_node_count=traf_node_count),
          mode=0644)
 
     # install cluster-env on all nodes
@@ -78,14 +81,6 @@ class Master(Script):
 
     # Execute SQ gen
     Execute('source ~/.bashrc ; sqgen',user=params.traf_user)
-
-    ### Experimental
-    params.HdfsDirectory("/hbase/archive",
-                         action="create_delayed",
-                         owner=params.hbase_user,
-                         group=params.hbase_user,
-                        )
-    params.HdfsDirectory(None, action="create")
 
 
   #To stop the service, use the linux service stop command and pipe output to log file
@@ -100,7 +95,7 @@ class Master(Script):
     # Check HDFS set up
     # Must be in start section, since we need HDFS running
     params.HdfsDirectory("/hbase/archive",
-                         action="create_delayed",
+                         action="create_on_execute",
                          owner=params.hbase_user,
                          group=params.hbase_user,
                         )
@@ -108,7 +103,7 @@ class Master(Script):
     #   /hbase-staging
     #   /user/trafodion//{trafodion_backups,bulkload,lobs}
     # ACLs for /hbase/archive
-    params.HdfsDirectory(None, action="create")
+    params.HdfsDirectory(None, action="execute")
 
     # Start trafodion
     Execute('source ~/.bashrc ; sqstart',user=params.traf_user)

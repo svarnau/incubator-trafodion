@@ -116,7 +116,7 @@ mv -f %{name}-%{version}/* %{buildroot}/home/trafodion/%{name}-%{version}
 mkdir -p /etc/trafodion/
 echo "SQ_HOME=/home/trafodion/%{name}-%{version}" > /etc/trafodion/trafodion_config
 echo "source /etc/trafodion/conf/trafodion-env.sh" >> /etc/trafodion/trafodion_config
-echo "source /etc/trafodion/conf/cluster-env.sh" >> /etc/trafodion/trafodion_config
+echo "source /etc/trafodion/conf/traf-cluster-env.sh" >> /etc/trafodion/trafodion_config
 
 
 %clean

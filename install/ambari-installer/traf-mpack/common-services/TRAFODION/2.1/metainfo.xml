@@ -90,7 +90,7 @@
               </configFile>
               <configFile>
                 <type>env</type>
-                <fileName>cluster-env.sh</fileName>
+                <fileName>traf-cluster-env.sh</fileName>
                 <dictionaryName>traf-cluster-env</dictionaryName>
               </configFile>
             </configFiles>
@@ -111,6 +111,7 @@
             </requiredServices>
       	    <configuration-dependencies>
         	<config-type>trafodion-env</config-type>
+        	<config-type>traf-cluster-env</config-type>
       	    </configuration-dependencies>
             <restartRequiredAfterChange>true</restartRequiredAfterChange>
         </service>
