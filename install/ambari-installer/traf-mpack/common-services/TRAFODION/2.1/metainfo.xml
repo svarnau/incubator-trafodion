@@ -93,6 +93,11 @@
                 <fileName>traf-cluster-env.sh</fileName>
                 <dictionaryName>traf-cluster-env</dictionaryName>
               </configFile>
+              <configFile>
+                <type>env</type>
+                <fileName>dcs-env.sh</fileName>
+                <dictionaryName>dcs-env</dictionaryName>
+              </configFile>
             </configFiles>
             <!-- what yum packages need to be installed -->
             <osSpecifics>
@@ -112,6 +117,7 @@
       	    <configuration-dependencies>
         	<config-type>trafodion-env</config-type>
         	<config-type>traf-cluster-env</config-type>
+        	<config-type>dcs-env</config-type>
       	    </configuration-dependencies>
             <restartRequiredAfterChange>true</restartRequiredAfterChange>
         </service>

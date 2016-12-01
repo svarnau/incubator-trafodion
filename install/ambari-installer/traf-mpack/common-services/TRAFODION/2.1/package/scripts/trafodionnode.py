@@ -29,7 +29,7 @@ class Node(Script):
               group = params.traf_group)
     File(os.path.join(trafhome,".ssh/id_rsa"),
          owner = params.traf_user, 
-         group = params.traf_user, 
+         group = params.traf_group, 
          content=params.traf_priv_key,
          mode=0600)
 
@@ -40,7 +40,7 @@ class Node(Script):
     sshopt = format('Host *\n' + '    StrictHostKeyChecking=no\n')
     File(os.path.join(trafhome,".ssh/config"),
          owner = params.traf_user, 
-         group = params.traf_user, 
+         group = params.traf_group, 
          content=sshopt,
          mode=0600)
 
@@ -54,7 +54,7 @@ class Node(Script):
     traf_conf_path = os.path.join(params.traf_conf_dir, "trafodion-env.sh")
     File(traf_conf_path,
          owner = params.traf_user, 
-         group = params.traf_user, 
+         group = params.traf_group, 
          content=InlineTemplate(params.traf_env_template,trim_blocks=False),
          mode=0644)
     # cluster file will be over-written by trafodionmaster install
@@ -62,7 +62,7 @@ class Node(Script):
     traf_conf_path = os.path.join(params.traf_conf_dir, "traf-cluster-env.sh")
     File(traf_conf_path,
          owner = params.traf_user, 
-         group = params.traf_user, 
+         group = params.traf_group, 
          content="# place-holder",
          mode=0644)
     # initialize & verify env (e.g., creates $SQROOT/tmp as trafodion user)
