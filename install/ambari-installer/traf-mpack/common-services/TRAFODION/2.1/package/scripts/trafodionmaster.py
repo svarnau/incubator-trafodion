@@ -99,11 +99,30 @@ class Master(Script):
                          owner=params.hbase_user,
                          group=params.hbase_user,
                         )
-    # To Be Added: 
-    #   /hbase-staging
-    #   /user/trafodion//{trafodion_backups,bulkload,lobs}
-    # ACLs for /hbase/archive
+    params.HdfsDirectory("/hbase-staging",
+                         action="create_on_execute",
+                         owner=params.hbase_user,
+                         group=params.hbase_user,
+                        )
+    params.HdfsDirectory("/user/trafodion/trafodion_backups",
+                         action="create_on_execute",
+                         owner=params.traf_user,
+                         group=params.traf_user,
+                        )
+    params.HdfsDirectory("/user/trafodion/bulkload",
+                         action="create_on_execute",
+                         owner=params.traf_user,
+                         group=params.traf_user,
+                        )
+    params.HdfsDirectory("/user/trafodion/lobs",
+                         action="create_on_execute",
+                         owner=params.traf_user,
+                         group=params.traf_user,
+                        )
     params.HdfsDirectory(None, action="execute")
+    cmd = "hdfs dfs -setfacl -R -m user:%s:rwx,default:user:%s:rwx,mask::rwx /hbase/archive" % 
+               (params.traf_user, params.traf_user)
+    Execute(cmd,user=params.hdfs_user)
 
     # Start trafodion
     Execute('source ~/.bashrc ; sqstart',user=params.traf_user)
