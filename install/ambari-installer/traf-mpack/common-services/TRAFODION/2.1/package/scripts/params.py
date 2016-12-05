@@ -7,8 +7,8 @@ config = Script.get_config()
 java_home = config['hostLevelParams']['java_home']
 
 dcs_servers = config['configurations']['dcs-env']['dcs.servers']
-dcs_port = config['configurations']['dcs-env']['dcs.port']
-dcs_info_port = config['configurations']['dcs-env']['dcs.info.port']
+dcs_port = config['configurations']['dcs-site']['dcs.master.port']
+dcs_info_port = config['configurations']['dcs-site']['dcs.master.info.port']
 dcs_mast_node_list = default("/clusterHostInfo/traf_dcs_prime_hosts", '')
 dcs_back_node_list = default("/clusterHostInfo/traf_dcs_second_hosts", '')
 dcs_env_template = config['configurations']['dcs-env']['content']
@@ -21,7 +21,7 @@ else:
 
 traf_db_admin = config['configurations']['trafodion-env']['traf.db.admin']
 
-traf_conf_dir = '/etc/trafodion/conf' # path is hard-coded in /etc/trafodion_trafodion_config
+traf_conf_dir = '/etc/trafodion/conf' # path is hard-coded in /etc/trafodion/trafodion_config
 traf_env_template = config['configurations']['trafodion-env']['content']
 traf_clust_template = config['configurations']['traf-cluster-env']['content']
 
