@@ -43,24 +43,6 @@
     </value-attributes>
   </property>
   <property>
-    <name>dcs.port</name>
-    <display-name>DCS Master Port</display-name>
-    <value>23400</value>
-    <description>Client Connection Port</description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-  <property>
-    <name>dcs.info.port</name>
-    <display-name>DCS Info Port</display-name>
-    <value>24400</value>
-    <description>Client Connection Info Port</description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-  <property>
     <name>content</name>
     <display-name>dcs-env template</display-name>
     <description>Template for dcs-env.sh file</description>
@@ -71,6 +53,7 @@
 
 # The java implementation to use.  Java 1.7 required.
 # export JAVA_HOME=/usr/java/jdk1.7.0/
+JAVA_HOME={{java_home}}
 
 # Add Trafodion to the classpath
 if [ "$MY_SQROOT" != "" ]; then

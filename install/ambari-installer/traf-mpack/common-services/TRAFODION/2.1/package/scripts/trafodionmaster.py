@@ -23,12 +23,14 @@ class Master(Script):
     loc_node_list = []
     for node_id, node in enumerate(params.traf_node_list):
         # find the local hostname for each node
-        cmd = "ssh %s hostname" % node
+        cmd = "ssh -q %s hostname" % node
         ofile = TemporaryFile()
         Execute(cmd,user=params.traf_user,stdout=ofile)
         ofile.seek(0) # read from beginning
         localhn = ofile.readline().rstrip()
         ofile.close()
+        cmd = "ssh %s 'echo success'" % hostname
+        Execute(cmd,user=params.traf_user) # verify we can use this hostname to communicate
  
         line = 'node-id=%s;node-name=%s;cores=0-%d;processors=%s;roles=connection,aggregation,storage\n' \
                  % (node_id, localhn, core, processor)
@@ -120,7 +122,7 @@ class Master(Script):
                          group=params.traf_group,
                         )
     params.HdfsDirectory(None, action="execute")
-    cmd = "hdfs dfs -setfacl -R -m user:%s:rwx,default:user:%s:rwx,mask::rwx /hbase/archive" % 
+    cmd = "hdfs dfs -setfacl -R -m user:%s:rwx,default:user:%s:rwx,mask::rwx /hbase/archive" % \
                (params.traf_user, params.traf_user)
     Execute(cmd,user=params.hdfs_user)
 

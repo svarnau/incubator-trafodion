@@ -45,17 +45,33 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
         if {"name": "HBASE_REGIONSERVER"} not in hostComponents and {"name": "TRAF_NODE"} in hostComponents:
           hostComponents.remove({"name": "TRAF_NODE"})
 
-    # Place TRAF_DCS_SECOND on different nodes from TRAF_DCS_PRIME
-    dcsS = [component for component in serviceComponents if component["StackServiceComponents"]["component_name"] == "TRAF_DCS_SECOND"][0]
-    if not self.isComponentHostsPopulated(dcsS):
-      placed = False
-      for hostName in hostsComponentsMap.keys():
-         hostComponents = hostsComponentsMap[hostName]
-         if {"name": "TRAF_DCS_PRIME"} in hostComponents and {"name": "TRAF_DCS_SECOND"} in hostComponents:
-            hostComponents.remove({"name": "TRAF_DCS_SECOND"})
-         if {"name": "TRAF_DCS_PRIME"} not in hostComponents and not placed:
-            hostsComponentsMap[hostName].append( { "name": "TRAF_DCS_SECOND" } )
-            placed = True
+    # Place TRAF_DCS_* on ZOOKEEPER nodes by default
+    # DCS_PRIME and DCS_SECOND are exclusive
+    pplaced = False
+    for hostName in hostsComponentsMap.keys():
+      hostComponents = hostsComponentsMap[hostName]
+      if {"name": "ZOOKEEPER"} in hostComponents:
+        if {"name": "TRAF_DCS_PRIME"} in hostComponents:
+           if pplaced:
+              hostComponents.remove({"name": "TRAF_DCS_PRIME"}) # only one allowed
+           elif {"name": "TRAF_DCS_SECOND"} in hostComponents:
+              pplaced = True
+              hostComponents.remove({"name": "TRAF_DCS_SECOND"})
+           else:
+              pplaced = True
+        else:
+           if pplaced and {"name": "TRAF_DCS_SECOND"} not in hostComponents:
+              hostsComponentsMap[hostName].append( { "name": "TRAF_DCS_SECOND" } )
+           elif not pplaced:
+              hostsComponentsMap[hostName].append( { "name": "TRAF_DCS_PRIME" } )
+              pplaced = True
+              if {"name": "TRAF_DCS_SECOND"} in hostComponents:
+                 hostComponents.remove({"name": "TRAF_DCS_SECOND"})
+      else:
+        if {"name": "TRAF_DCS_PRIME"} in hostComponents:
+           hostComponents.remove({"name": "TRAF_DCS_PRIME"})
+        if {"name": "TRAF_DCS_SECOND"} in hostComponents:
+           hostComponents.remove({"name": "TRAF_DCS_SECOND"})
 
  
   def getServiceComponentLayoutValidations(self, services, hosts):
