@@ -98,6 +98,16 @@
                 <fileName>dcs-env.sh</fileName>
                 <dictionaryName>dcs-env</dictionaryName>
               </configFile>
+              <configFile>
+                <type>xml</type>
+                <fileName>rest-site.sh</fileName>
+                <dictionaryName>rest-site</dictionaryName>
+              </configFile>
+              <configFile>
+                <type>xml</type>
+                <fileName>dcs-site.sh</fileName>
+                <dictionaryName>dcs-site</dictionaryName>
+              </configFile>
             </configFiles>
             <!-- what yum packages need to be installed -->
             <osSpecifics>
@@ -118,8 +128,9 @@
         	<config-type>trafodion-env</config-type>
         	<config-type>traf-cluster-env</config-type>
         	<config-type>dcs-env</config-type>
+        	<config-type>dcs-site</config-type>
+        	<config-type>rest-site</config-type>
       	    </configuration-dependencies>
-            <restartRequiredAfterChange>true</restartRequiredAfterChange>
         </service>
     </services>
 </metainfo>

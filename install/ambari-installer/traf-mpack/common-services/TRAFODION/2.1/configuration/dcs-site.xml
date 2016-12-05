@@ -28,7 +28,40 @@
 <configuration>
 
   <property>
-    <name>rest.dns.interface</name>
+    <name>dcs.master.port</name>
+    <display-name>DCS Master Port</display-name>
+    <value>23400</value>
+    <description>
+        Default port for clients to connect to Trafodion.
+    </description>
+    <value-attributes>
+       <type>int</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.master.port.range</name>
+    <display-name>DCS Master Port Range</display-name>
+    <value>100</value>
+    <description>
+        Default number of connectivity ports.
+    </description>
+    <value-attributes>
+        <type>int</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.master.info.port</name>
+    <display-name>DCS Master Info Port</display-name>
+    <value>24400</value>
+    <description>The port for the DCS Master web UI.
+    Set to -1 if you do not want a User Interface instance run.
+    </description>
+    <value-attributes>
+       <type>int</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.dns.interface</name>
     <display-name>Network interface for DNS</display-name>
     <value>default</value>
     <description>The server uses the local host name for reporting its IP address. If your machine
@@ -42,6 +75,47 @@
       <type>string</type>
     </value-attributes>
   </property>
+  <property>
+    <name>dcs.info.threads.max</name>
+    <display-name>Info threads maximum</display-name>
+    <value>100</value>
+    <description>
+        The maximum number of threads of the info server thread pool.
+        Threads in the pool are reused to process requests. This
+        controls the maximum number of requests processed concurrently.
+        It may help to control the memory used by the info server to
+        avoid out of memory issues. If the thread pool is full, incoming requests
+        will be queued up and wait for some free threads. 
+    </description>
+    <value-attributes>
+       <type>int</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.info.threads.min</name>
+    <display-name>Info threads minimum</display-name>
+    <value>2</value>
+    <description>
+        The minimum number of threads of the info server thread pool.
+        The thread pool always has at least these number of threads so
+        the info server is ready to serve incoming requests.
+    </description>
+    <value-attributes>
+       <type>int</type>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.server.handler.threads.max</name>
+    <display-name>Server threads maximum</display-name>
+    <value>10</value>
+    <description>
+        For every DcsServer specified in the conf/servers file the maximum number of server handler threads that will be created. There can never be more than this value for any given DcsServer.
+    </description>
+    <value-attributes>
+       <type>int</type>
+    </value-attributes>
+  </property>
+  
   <property>
     <name>zookeeper.session.timeout</name>
     <display-name>ZooKeeper session timeout</display-name>
@@ -61,16 +135,17 @@
     <name>zookeeper.znode.parent</name>
     <display-name>Root znode in ZooKeeper</display-name>
     <value>/${user.name}</value>
-    <description>The server will look for DCS znodes under this znode
-    and will create any REST server specific znodes here as well.
+    <description>All of dcs's ZooKeeper
+      znodes that are configured with a relative path will go under this node.
+      By default, all of dcs's ZooKeeper file path are configured with a
+      relative path, so they will all go under this directory unless changed.
     </description>
     <value-attributes>
       <type>string</type>
     </value-attributes>
   </property>
-  
   <property>
-    <name>rest.zookeeper.quorum</name>
+    <name>dcs.zookeeper.quorum</name>
     <display-name>ZooKeeper quorum</display-name>
     <value>{{zookeeper_quorum_hosts}}</value>
     <description>Comma separated list of servers in the ZooKeeper Quorum.
@@ -80,10 +155,9 @@
       <type>string</type>
     </value-attributes>
   </property>
-
   
   <property>
-    <name>rest.zookeeper.property.clientPort</name>
+    <name>dcs.zookeeper.property.clientPort</name>
     <display-name>ZooKeeper client port</display-name>
     <value>{{zookeeper_clientPort}}</value>
     <description>
@@ -91,66 +165,6 @@
     </description>
     <value-attributes>
       <type>string</type>
-    </value-attributes>
-  </property>
-  <property>
-    <name>rest.port</name>
-    <display-name>Trafodion REST port</display-name>
-    <value>4200</value>
-    <description>The http port for the REST server.</description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-   <property>
-    <name>rest.https.port</name>
-    <display-name>Trafodion REST secure port</display-name>
-    <value>4201</value>
-    <description>The https port for the REST server.</description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-  <property>
-    <name>rest.readonly</name>
-    <display-name>Trafodion REST read-only mode</display-name>
-    <value>false</value>
-    <description>
-    Mode the REST server will be started in.
-    false: All HTTP methods are permitted - GET/PUT/POST/DELETE.
-    true: Only the GET method is permitted.
-    </description>
-    <value-attributes>
-      <type>boolean</type>
-    </value-attributes>
-  </property>
-  <property>
-    <name>rest.threads.max</name>
-    <display-name>Trafodion REST maximum threads</display-name>
-    <value>100</value>
-    <description>
-        The maximum number of threads of the server thread pool.
-        Threads in the pool are reused to process requests. This
-        controls the maximum number of requests processed concurrently.
-        It may help to control the memory used by the server to
-        avoid out of memory issues. If the thread pool is full, incoming requests
-        will be queued up and wait for some free threads. 
-    </description>
-    <value-attributes>
-      <type>int</type>
-    </value-attributes>
-  </property>
-  <property>
-    <name>rest.threads.min</name>
-    <display-name>Trafodion REST minimum threads</display-name>
-    <value>2</value>
-    <description>
-        The minimum number of threads of the server thread pool.
-        The thread pool always has at least these number of threads so
-        the server is ready to serve incoming requests.
-    </description>
-    <value-attributes>
-      <type>int</type>
     </value-attributes>
   </property>
 

@@ -82,10 +82,10 @@ class Node(Script):
          mode=0644)
 
     serverlist = ''
-    node_cnt = len(traf_node_list)
+    node_cnt = len(params.traf_node_list)
     per_node = int(params.dcs_servers) // node_cnt
     extra = int(params.dcs_servers) % node_cnt
-    for nnum, node in enumerate(params.dcs_back_node_list, start=0):
+    for nnum, node in enumerate(params.traf_node_list, start=0):
       if nnum < extra:
          serverlist += '%s %s\n' % (node, per_node + 1)
       else:
@@ -95,16 +95,20 @@ class Node(Script):
          group = params.traf_group, 
          content = serverlist,
          mode=0644)
+    XmlConfig("dcs-site.xml",
+              conf_dir=trafhome,
+              configurations=params.config['configurations']['dcs-site'],
+              owner=params.traf_user,
+              mode=0644)
     # install DCS conf files
-    cmd = "mv -f ~/dcs-env.sh ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
+    cmd = "mv -f ~/dcs-env.sh ~/dcs-site.xml ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
     Execute(cmd,user=params.traf_user)
 
     XmlConfig("rest-site.xml",
-              conf_dir=traf_home,
+              conf_dir=trafhome,
               configurations=params.config['configurations']['rest-site'],
               owner=params.traf_user,
-              mode='f'
-             )
+              mode=0644)
     # install REST conf files
     cmd = "mv -f ~/rest-site.xml $REST_INSTALL_DIR/conf/"
     Execute(cmd,user=params.traf_user)
