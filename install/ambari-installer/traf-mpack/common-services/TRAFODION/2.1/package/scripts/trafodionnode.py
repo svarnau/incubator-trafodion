@@ -99,6 +99,16 @@ class Node(Script):
     cmd = "mv -f ~/dcs-env.sh ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
     Execute(cmd,user=params.traf_user)
 
+    XmlConfig("rest-site.xml",
+              conf_dir=traf_home,
+              configurations=params.config['configurations']['rest-site'],
+              owner=params.traf_user,
+              mode='f'
+             )
+    # install REST conf files
+    cmd = "mv -f ~/rest-site.xml $REST_INSTALL_DIR/conf/"
+    Execute(cmd,user=params.traf_user)
+
 
 
     ##################

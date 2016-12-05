@@ -13,6 +13,12 @@ dcs_mast_node_list = default("/clusterHostInfo/traf_dcs_prime_hosts", '')
 dcs_back_node_list = default("/clusterHostInfo/traf_dcs_second_hosts", '')
 dcs_env_template = config['configurations']['dcs-env']['content']
 
+zookeeper_quorum_hosts = ",".join(config['clusterHostInfo']['zookeeper_hosts'])
+if 'zoo.cfg' in config['configurations'] and 'clientPort' in config['configurations']['zoo.cfg']:
+  zookeeper_clientPort = config['configurations']['zoo.cfg']['clientPort']
+else:
+  zookeeper_clientPort = '2181'
+
 traf_db_admin = config['configurations']['trafodion-env']['traf.db.admin']
 
 traf_conf_dir = '/etc/trafodion/conf' # path is hard-coded in /etc/trafodion_trafodion_config
