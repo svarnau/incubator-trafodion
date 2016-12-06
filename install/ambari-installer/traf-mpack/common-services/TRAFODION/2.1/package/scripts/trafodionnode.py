@@ -64,7 +64,7 @@ class Node(Script):
     File(os.path.join(trafhome,"dcs-env.sh"),
          owner = params.traf_user, 
          group = params.traf_group, 
-         content = params.dcs_env_template,
+         content = InlineTemplate(params.dcs_env_template),
          mode=0644)
 
     serverlist = params.dcs_mast_node_list[0] + '\n'

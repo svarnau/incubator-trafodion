@@ -29,7 +29,7 @@ class Master(Script):
         ofile.seek(0) # read from beginning
         localhn = ofile.readline().rstrip()
         ofile.close()
-        cmd = "ssh %s 'echo success'" % hostname
+        cmd = "ssh %s 'echo success'" % localhn
         Execute(cmd,user=params.traf_user) # verify we can use this hostname to communicate
  
         line = 'node-id=%s;node-name=%s;cores=0-%d;processors=%s;roles=connection,aggregation,storage\n' \
