@@ -140,8 +140,8 @@ fi
 export TRAF_HOME=$PWD
 
 # normal installed location, can be overridden in .trafodion
-export DCS_INSTALL_DIR=$SQ_HOME/dcs-$TRAFODION_VER
-export REST_INSTALL_DIR=$SQ_HOME/rest-$TRAFODION_VER
+export DCS_INSTALL_DIR=$MY_SQROOT/dcs-$TRAFODION_VER
+export REST_INSTALL_DIR=$MY_SQROOT/rest-$TRAFODION_VER
 
 # set common version to be consistent between shared lib and maven dependencies
 export HBASE_DEP_VER_CDH=1.2.0-cdh5.7.1
