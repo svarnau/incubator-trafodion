@@ -24,10 +24,4 @@ tar czf "$tball" traf-mpack
 ambari-server install-mpack --verbose --mpack="$tball"
 ret=$?
 
-# HACK until Ambari 2.4.2 available -- update stack repo file
-for v in 2.3 2.4 2.5
-do
-  sed -i -e "/redhat6/r ${instloc}/mpack-install/repo" /var/lib/ambari-server/resources/stacks/HDP/$v/repos/repoinfo.xml
-done
-
 exit $ret
