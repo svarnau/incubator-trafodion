@@ -45,12 +45,12 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
         if {"name": "HBASE_REGIONSERVER"} not in hostComponents and {"name": "TRAF_NODE"} in hostComponents:
           hostComponents.remove({"name": "TRAF_NODE"})
 
-    # Place TRAF_DCS_* on ZOOKEEPER nodes by default
+    # Place TRAF_DCS_* on ZOOKEEPER_SERVER nodes by default
     # DCS_PRIME and DCS_SECOND are exclusive
     pplaced = False
     for hostName in hostsComponentsMap.keys():
       hostComponents = hostsComponentsMap[hostName]
-      if {"name": "ZOOKEEPER"} in hostComponents:
+      if {"name": "ZOOKEEPER_SERVER"} in hostComponents:
         if {"name": "TRAF_DCS_PRIME"} in hostComponents:
            if pplaced:
               hostComponents.remove({"name": "TRAF_DCS_PRIME"}) # only one allowed
