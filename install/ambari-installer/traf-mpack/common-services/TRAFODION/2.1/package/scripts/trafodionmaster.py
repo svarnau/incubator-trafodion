@@ -135,14 +135,19 @@ class Master(Script):
     Execute('source ~/.bashrc ; sqcheck -f',user=params.traf_user)
  
   def initialize(self, env):
-    ########################## TBD
-    returnCode = 0
+    import params
+    cmd = "source ~/.bashrc ; echo 'initialize Trafodion;' | sqlci"
+    ofile = TemporaryFile()
+    Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile)
+    ofile.seek(0) # read from beginning
+    output = ofile.read()
+    ofile.close()
 
-    if returnCode == 0:
-       print "good!"
-    else:
-       sys.exit(-1)
- 
+    if (output.find('1395') >= 0 or output.find('1392') >= 0):
+      print "Re-trying initialize as upgrade\n"
+      cmd = "source ~/.bashrc ; echo 'initialize Trafodion, upgrade;' | sqlci"
+      Execute(cmd,user=params.traf_user)
+
 
 if __name__ == "__main__":
   Master().execute()
