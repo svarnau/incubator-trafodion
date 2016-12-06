@@ -12,6 +12,7 @@ dcs_info_port = config['configurations']['dcs-site']['dcs.master.info.port']
 dcs_mast_node_list = default("/clusterHostInfo/traf_dcs_prime_hosts", '')
 dcs_back_node_list = default("/clusterHostInfo/traf_dcs_second_hosts", '')
 dcs_env_template = config['configurations']['dcs-env']['content']
+dcs_log4j_template = config['configurations']['dcs-log4j']['content']
 
 zookeeper_quorum_hosts = ",".join(config['clusterHostInfo']['zookeeper_hosts'])
 if 'zoo.cfg' in config['configurations'] and 'clientPort' in config['configurations']['zoo.cfg']:

@@ -66,6 +66,11 @@ class Node(Script):
          group = params.traf_group, 
          content = InlineTemplate(params.dcs_env_template),
          mode=0644)
+    File(os.path.join(trafhome,"log4j.properties"),
+         owner = params.traf_user, 
+         group = params.traf_group, 
+         content = InlineTemplate(params.dcs_log4j_template),
+         mode=0644)
 
     serverlist = params.dcs_mast_node_list[0] + '\n'
     File(os.path.join(trafhome,"master"),
@@ -101,7 +106,7 @@ class Node(Script):
               owner=params.traf_user,
               mode=0644)
     # install DCS conf files
-    cmd = "mv -f ~/dcs-env.sh ~/dcs-site.xml ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
+    cmd = "mv -f ~/dcs-env.sh ~/log4j.properties ~/dcs-site.xml ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
     Execute(cmd,user=params.traf_user)
 
     XmlConfig("rest-site.xml",

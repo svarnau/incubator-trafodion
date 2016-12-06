@@ -99,13 +99,18 @@
                 <dictionaryName>dcs-env</dictionaryName>
               </configFile>
               <configFile>
+                <type>env</type>
+                <fileName>log4j.properties</fileName>
+                <dictionaryName>dcs-log4j</dictionaryName>
+              </configFile>
+              <configFile>
                 <type>xml</type>
-                <fileName>rest-site.sh</fileName>
+                <fileName>rest-site.xml</fileName>
                 <dictionaryName>rest-site</dictionaryName>
               </configFile>
               <configFile>
                 <type>xml</type>
-                <fileName>dcs-site.sh</fileName>
+                <fileName>dcs-site.xml</fileName>
                 <dictionaryName>dcs-site</dictionaryName>
               </configFile>
             </configFiles>
@@ -128,6 +133,7 @@
         	<config-type>trafodion-env</config-type>
         	<config-type>traf-cluster-env</config-type>
         	<config-type>dcs-env</config-type>
+        	<config-type>dcs-log4j</config-type>
         	<config-type>dcs-site</config-type>
         	<config-type>rest-site</config-type>
       	    </configuration-dependencies>
