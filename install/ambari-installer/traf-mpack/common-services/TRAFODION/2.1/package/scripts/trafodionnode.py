@@ -118,8 +118,8 @@ class Node(Script):
     ##################
     # Link TRX files into HBase lib dir
     hlib = "/usr/hdp/current/hbase-regionserver/lib/"
-    trx = "$SQ_HOME/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
-    util = "$SQ_HOME/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
+    trx = "$MY_SQROOT/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
+    util = "$MY_SQROOT/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
 
     cmd = "rm -f " + hlib + "hbase-trx-* " + hlib + "trafodion-utility-*"
     Execute(cmd)
