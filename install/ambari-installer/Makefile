@@ -18,7 +18,7 @@
 # Makefile to build trafodion management pack for Ambari
 
 RELEASE ?= 1
-REPO_URL ?= http://no.such.server.org/repo/RH6
+REPO_URL ?= http://no.such.server.org/repo
 
 SPECFILE = traf_ambari.spec
 
@@ -31,13 +31,24 @@ BUILDROOTDIR=$(RPMROOT)/BUILDROOT
 
 all: rpmbuild
 
-$(SOURCEDIR)/ambari_rpm.tar.gz: mpack-install/repo mpack-install/LICENSE
+# need repoinfo file per release
+# traf_ambari needs to support multiple releases so ambari can select 
+# correct trafodion version for a given HDP stack
+REPO_VER= 2.1
+
+$(SOURCEDIR)/ambari_rpm.tar.gz: mpack-install/LICENSE repofiles
 	rm -rf $(RPMROOT)
 	mkdir -p $(SOURCEDIR)
 	tar czf $@ traf-mpack mpack-install
 
-mpack-install/repo:
-	sed -e "s#REPLACE_WITH_REPO_URL#$(REPO_URL)#" repo.template > $@
+# To do: needs enhancement when supporting RH6 & RH7 os
+repofiles:
+	for v in $(REPO_VER); do \
+	   rdir=traf-mpack/custom-services/TRAFODION/$${v}/repos; \
+	   mkdir -p $${rdir} ; \
+	   sed -e "s#REPLACE_WITH_RH6_REPO_URL#$(REPO_URL)/RH6/$${v}#" repo.template > $${rdir}/repoinfo.xml ; \
+	   echo $${rdir}/repoinfo.xml ; \
+	done
 
 mpack-install/LICENSE: ../../licenses/LICENSE-install
 	cp -f $? $@
@@ -66,3 +77,4 @@ clean:
 	rm -rf $(RPMROOT)
 	rm -rf mpack-install/repo
 	rm -rf mpack-install/LICENSE
+	rm -rf traf-mpack/custom-services/TRAFODION/*/repos
