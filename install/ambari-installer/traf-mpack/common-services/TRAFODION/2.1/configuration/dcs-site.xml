@@ -60,6 +60,43 @@
        <type>int</type>
     </value-attributes>
   </property>
+
+  <property>
+    <name>dcs.master.floating.ip</name>
+    <display-name>DCS High Availability Enabled</display-name>
+    <value>false</value>
+    <description>Provides failover to DCS Backup servers (requires floating IP address)</description>
+    <value-attributes>
+       <type>value-list</type>
+       <entries>
+           <entry>
+             <value>true</value>
+             <label>Enabled</label>
+           </entry>
+           <entry>
+             <value>false</value>
+             <label>Disabled</label>
+           </entry>
+       </entries>
+       <selection-cardinality>1</selection-cardinality>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.master.floating.ip.external.ip.address</name>
+    <display-name>DCS High Availability IP address</display-name>
+    <value></value>
+    <description>Provides failover to DCS Backup servers</description>
+    <value-attributes>
+       <type>string</type>
+    </value-attributes>
+    <depends-on>
+       <property>
+         <type>dcs-site</type>
+         <name>dcs.master.floating.ip</name>
+       </property>
+    </depends-on>
+  </property>
+
   <property>
     <name>dcs.dns.interface</name>
     <display-name>Network interface for DNS</display-name>
@@ -75,6 +112,22 @@
       <type>string</type>
     </value-attributes>
   </property>
+  <property>
+    <name>dcs.master.floating.ip.external.interface</name>
+    <display-name>Network interface for floating IP address</display-name>
+    <value>default</value>
+    <description>The server uses the local host name for reporting its IP address. If your machine
+        has multiple interfaces the server will use the interface that the primary
+        host name resolves to. If this is insufficient, you can set this property
+        to indicate the primary interface e.g., "eth1". This only works if your cluster 
+        configuration is consistent and every host has the same network interface
+        configuration.        
+    </description>
+    <value-attributes>
+      <type>string</type>
+    </value-attributes>
+  </property>
+
   <property>
     <name>dcs.info.threads.max</name>
     <display-name>Info threads maximum</display-name>
