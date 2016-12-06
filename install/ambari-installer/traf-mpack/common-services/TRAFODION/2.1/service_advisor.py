@@ -144,6 +144,13 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     items = []
 
     val_items = []
+    cfg = configurations["dcs-site"]["properties"]
+    if cfg["dcs.master.floating.ip"] == "true" and cfg["dcs.master.floating.ip.external.ip.address"] == "":
+          message = "DCS High Availability requires a Floating IP address"
+          val_items.append({"config-name": "dcs.master.floating.ip.external.ip.address", "item": self.getWarnItem(message)})
+          items.extend(self.toConfigurationValidationProblems(val_items, "dcs-site"))
+
+    val_items = []
     cfg = configurations["hbase-site"]["properties"]
     for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
        if property not in cfg or cfg[property] != desired_value:
@@ -169,7 +176,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
 
     return items
 
-##### Desired values in other service configs
+  ##### Desired values in other service configs
   def getHbaseSiteDesiredValues(self):
     desired = {
         "hbase.master.distributed.log.splitting": "false",

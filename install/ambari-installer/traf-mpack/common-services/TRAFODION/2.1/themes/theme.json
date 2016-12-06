@@ -60,7 +60,15 @@
       "configuration-layout": "default",
       "configs": [
         {
-         "config": "dcs-env/dcs.servers",
+         "config": "dcs-site/dcs.servers",
+         "subsection-name": "DCS-1"
+        },
+        {
+         "config": "dcs-site/dcs.master.floating.ip",
+         "subsection-name": "DCS-1"
+        },
+        {
+         "config": "dcs-site/dcs.master.floating.ip.external.ip.address",
          "subsection-name": "DCS-1"
         },
         {
@@ -75,10 +83,18 @@
     },
     "widgets": [
         {
-         "config": "dcs-env/dcs.servers",
+         "config": "dcs-site/dcs.servers",
          "widget": { "type": "slider",
                      "units": [ { "unit-name": "Servers"} ]
          }
+        },
+        {
+         "config": "dcs-site/dcs.master.floating.ip",
+         "widget": { "type": "toggle"}
+        },
+        {
+         "config": "dcs-site/dcs.master.floating.ip.external.ip.address",
+         "widget": { "type": "text-field"}
         },
         {
          "config": "trafodion-env/traf.db.admin",
