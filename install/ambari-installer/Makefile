@@ -75,6 +75,5 @@ rpmbuild: $(SOURCEDIR)/ambari_rpm.tar.gz
 
 clean:
 	rm -rf $(RPMROOT)
-	rm -rf mpack-install/repo
 	rm -rf mpack-install/LICENSE
 	rm -rf traf-mpack/custom-services/TRAFODION/*/repos
