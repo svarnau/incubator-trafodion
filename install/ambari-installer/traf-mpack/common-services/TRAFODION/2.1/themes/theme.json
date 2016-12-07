@@ -15,7 +15,7 @@
             "sections": [ 
               {
                 "name": "DCS",
-                "display-name": "DCS Servers",
+                "display-name": "DCS Connectivity",
                 "row-index": "0",
                 "column-index": "0",
                 "row-span": "1",
@@ -60,7 +60,7 @@
       "configuration-layout": "default",
       "configs": [
         {
-         "config": "dcs-site/dcs.servers",
+         "config": "dcs-env/dcs.servers",
          "subsection-name": "DCS-1"
         },
         {
@@ -83,7 +83,7 @@
     },
     "widgets": [
         {
-         "config": "dcs-site/dcs.servers",
+         "config": "dcs-env/dcs.servers",
          "widget": { "type": "slider",
                      "units": [ { "unit-name": "Servers"} ]
          }

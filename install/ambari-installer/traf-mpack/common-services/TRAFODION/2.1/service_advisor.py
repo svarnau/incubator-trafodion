@@ -147,7 +147,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     cfg = configurations["dcs-site"]["properties"]
     if cfg["dcs.master.floating.ip"] == "true" and cfg["dcs.master.floating.ip.external.ip.address"] == "":
           message = "DCS High Availability requires a Floating IP address"
-          val_items.append({"config-name": "dcs.master.floating.ip.external.ip.address", "item": self.getWarnItem(message)})
+          val_items.append({"config-name": "dcs.master.floating.ip.external.ip.address", "item": self.getErrorItem(message)})
           items.extend(self.toConfigurationValidationProblems(val_items, "dcs-site"))
 
     val_items = []
