@@ -46,6 +46,26 @@
     </value-attributes>
   </property>
   <property>
+    <name>traf.ldap.enabled</name>
+    <display-name>LDAP authentication enabled</display-name>
+    <value>false</value>
+    <description>Enable Trafodion user authentication via LDAP</description>
+    <value-attributes>
+      <type>value-list</type>
+       <entries>
+           <entry>
+             <value>YES</value>
+             <label>Enabled</label>
+           </entry>
+           <entry>
+             <value>NO</value>
+             <label>Disabled</label>
+           </entry>
+       </entries>
+       <selection-cardinality>1</selection-cardinality>
+    </value-attributes>
+  </property>
+  <property>
     <name>traf.sshkey.priv</name>
     <display-name>Generated SSH Key</display-name>
 <!--TRAFODION-GENERATED-SSH-KEY--><value>
@@ -69,6 +89,7 @@ export DB_ADMIN_USER={{traf_db_admin}}
 
 export HADOOP_TYPE="hortonworks"
 
+export TRAFODION_ENABLE_AUTHENTICATION={{traf_ldap_enabled}}
   
     </value>
     <value-attributes>
