@@ -78,6 +78,10 @@
         {
          "config": "trafodion-env/traf.node.dir",
          "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.enabled",
+         "subsection-name": "database-1"
         }
       ]
     },
@@ -103,6 +107,10 @@
         {
          "config": "trafodion-env/traf.node.dir",
          "widget": { "type": "directories"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.enabled",
+         "widget": { "type": "toggle"}
         }
     ]
   }

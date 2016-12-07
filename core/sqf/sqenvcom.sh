@@ -45,7 +45,7 @@ export PRODUCT_COPYRIGHT_HEADER="2015-2016 Apache Software Foundation"
 # LDAP configuration must also be setup--see
 # $TRAF_HOME/sql/scripts/traf_authentication_config for details.
 ##############################################################
-export TRAFODION_ENABLE_AUTHENTICATION=NO
+export TRAFODION_ENABLE_AUTHENTICATION=${TRAFODION_ENABLE_AUTHENTICATION:-NO}
 
 
 # default SQ_IC to TCP if it is not set in sqenv.sh. Values are

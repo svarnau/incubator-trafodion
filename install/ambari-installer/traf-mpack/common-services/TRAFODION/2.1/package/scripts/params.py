@@ -57,6 +57,8 @@ traf_node_list = default("/clusterHostInfo/traf_node_hosts", '')
 
 traf_scratch = config['configurations']['trafodion-env']['traf.node.dir']
 
+traf_ldap_enabled = config['configurations']['trafodion-env']['traf.ldap.enabled']
+
 #HDFS Dir creation
 hostname = config["hostname"]
 hadoop_conf_dir = "/etc/hadoop/conf"
