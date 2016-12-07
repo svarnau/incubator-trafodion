@@ -144,6 +144,7 @@ class Master(Script):
     ofile.close()
 
     if (output.find('1395') >= 0 or output.find('1392') >= 0):
+      print output + '\n'
       print "Re-trying initialize as upgrade\n"
       cmd = "source ~/.bashrc ; echo 'initialize Trafodion, upgrade;' | sqlci"
       Execute(cmd,user=params.traf_user)
