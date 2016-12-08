@@ -151,6 +151,17 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
           items.extend(self.toConfigurationValidationProblems(val_items, "dcs-site"))
 
     val_items = []
+    cfg = configurations["trafodion-env"]["properties"]
+    if cfg["traf.ldap.enabled"] == "YES" and cfg["traf.ldap.hosts"] == "":
+          message = "LDAP authentication requires one or more LDAP servers"
+          val_items.append({"config-name": "traf.ldap.hosts", "item": self.getErrorItem(message)})
+          items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
+    if cfg["traf.ldap.encrypt"] != "0" and cfg["traf.ldap.certpath"] == "":
+          message = "LDAP encryption requires a certificate file"
+          val_items.append({"config-name": "traf.ldap.certpath", "item": self.getErrorItem(message)})
+          items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
+
+    val_items = []
     cfg = configurations["hbase-site"]["properties"]
     for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
        if property not in cfg or cfg[property] != desired_value:

@@ -82,6 +82,34 @@
         {
          "config": "trafodion-env/traf.ldap.enabled",
          "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.hosts",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.port",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.identifiers",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.user",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.pwd",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.encrypt",
+         "subsection-name": "database-1"
+        },
+        {
+         "config": "trafodion-env/traf.ldap.certpath",
+         "subsection-name": "database-1"
         }
       ]
     },
@@ -111,6 +139,34 @@
         {
          "config": "trafodion-env/traf.ldap.enabled",
          "widget": { "type": "toggle"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.hosts",
+         "widget": { "type": "text-field"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.port",
+         "widget": { "type": "text-field"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.identifiers",
+         "widget": { "type": "text-field"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.user",
+         "widget": { "type": "text-field"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.pwd",
+         "widget": { "type": "password"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.encrypt",
+         "widget": { "type": "radio-button"}
+        },
+        {
+         "config": "trafodion-env/traf.ldap.certpath",
+         "widget": { "type": "text-field"}
         }
     ]
   }
