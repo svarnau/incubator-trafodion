@@ -49,7 +49,7 @@
   <property>
     <name>traf.ldap.enabled</name>
     <display-name>LDAP authentication enabled</display-name>
-    <value>false</value>
+    <value>NO</value>
     <description>Enable Trafodion user authentication via LDAP</description>
     <value-attributes>
       <type>value-list</type>
@@ -71,6 +71,12 @@
     <display-name>LDAP server list</display-name>
     <value></value>
     <description>List of LDAP hostnames (comma separated)</description>
+    <depends-on>
+       <property>
+          <type>trafodion-env</type>
+          <name>traf.ldap.enabled</name>
+       </property>
+    </depends-on>
     <value-attributes>
       <type>string</type>
       <empty-value-valid>true</empty-value-valid>
@@ -102,21 +108,21 @@
     <description>LDAP encryption level must match LDAP server(s)</description>
     <value-attributes>
       <type>value-list</type>
-       <entries>
-           <entry>
-             <value>0</value>
-             <label>Encryption not used</label>
-           </entry>
-           <entry>
-             <value>1</value>
-             <label>SSL Encryption</label>
-           </entry>
-           <entry>
-             <value>2</value>
-             <label>TLS Encryption</label>
-           </entry>
-       </entries>
-       <selection-cardinality>1</selection-cardinality>
+      <entries>
+          <entry>
+            <value>0</value>
+            <label>Encryption not used</label>
+          </entry>
+          <entry>
+            <value>1</value>
+            <label>SSL Encryption</label>
+          </entry>
+          <entry>
+            <value>2</value>
+            <label>TLS Encryption</label>
+          </entry>
+      </entries>
+      <selection-cardinality>1</selection-cardinality>
     </value-attributes>
   </property>
   <property>
@@ -124,6 +130,12 @@
     <display-name>LDAP encryption certificate file path</display-name>
     <value></value>
     <description>File path of SSL/TLS certificate file (*.pem)</description>
+    <depends-on>
+       <property>
+          <type>trafodion-env</type>
+          <name>traf.ldap.encrypt</name>
+       </property>
+    </depends-on>
     <value-attributes>
       <type>string</type>
       <empty-value-valid>true</empty-value-valid>

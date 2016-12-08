@@ -11,7 +11,7 @@
           "display-name": "Settings",
           "layout": {
             "tab-columns": "1",
-            "tab-rows": "2",
+            "tab-rows": "3",
             "sections": [ 
               {
                 "name": "DCS",
@@ -50,6 +50,25 @@
                     "column-span": "1"
                   }
                 ]
+              },
+              {
+                "name": "LDAP",
+                "display-name": "LDAP Authentication (optional)",
+                "row-index": "2",
+                "column-index": "0",
+                "row-span": "1",
+                "column-span": "1",
+                "section-columns": "1",
+                "section-rows": "1",
+                "subsections": [ 
+                  {
+                    "name": "ldap-1",
+                    "row-index": "0",
+                    "column-index": "0",
+                    "row-span": "1",
+                    "column-span": "1"
+                  }
+                ]
               }
             ]
           }
@@ -81,35 +100,35 @@
         },
         {
          "config": "trafodion-env/traf.ldap.enabled",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.hosts",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.port",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.identifiers",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.user",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.pwd",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.encrypt",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         },
         {
          "config": "trafodion-env/traf.ldap.certpath",
-         "subsection-name": "database-1"
+         "subsection-name": "ldap-1"
         }
       ]
     },
@@ -162,7 +181,7 @@
         },
         {
          "config": "trafodion-env/traf.ldap.encrypt",
-         "widget": { "type": "radio-button"}
+         "widget": { "type": "combo"}
         },
         {
          "config": "trafodion-env/traf.ldap.certpath",
