@@ -78,6 +78,20 @@ class Node(Script):
     cmd = "source ~/.bashrc"
     Execute(cmd,user=params.traf_user)
 
+    # LDAP config
+    # In future, should move to traf_conf_dir
+    if params.traf_ldap_enabled == 'YES':
+      File(os.path.join(trafhome,".traf_authentication_config"),
+           owner = params.traf_user, 
+           group = params.traf_group, 
+           content = InlineTemplate(params.traf_ldap_template),
+           mode=0750)
+      cmd = "source ~/.bashrc ; mv -f ~/.traf_authentication_config $MY_SQROOT/sql/scripts/"
+      Execute(cmd,user=params.traf_user)
+      cmd = "source ~/.bashrc ; ldapconfigcheck -file $MY_SQROOT/sql/scripts/.traf_authentication_config"
+      Execute(cmd,user=params.traf_user)
+      cmd = 'ldapcheck --verbose --username=%s' % traf_db_admin
+      Execute(cmd,user=params.traf_user)
 
     # All Trafodion Nodes need DCS config files
     # In future, should move DCS conf to traf_conf_dir
@@ -126,7 +140,7 @@ class Node(Script):
               owner=params.traf_user,
               mode=0644)
     # install DCS conf files
-    cmd = "mv -f ~/dcs-env.sh ~/log4j.properties ~/dcs-site.xml ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
+    cmd = "source ~/.bashrc ; mv -f ~/dcs-env.sh ~/log4j.properties ~/dcs-site.xml ~/master ~/backup-masters ~/servers $DCS_INSTALL_DIR/conf/"
     Execute(cmd,user=params.traf_user)
 
     XmlConfig("rest-site.xml",
@@ -135,7 +149,7 @@ class Node(Script):
               owner=params.traf_user,
               mode=0644)
     # install REST conf files
-    cmd = "mv -f ~/rest-site.xml $REST_INSTALL_DIR/conf/"
+    cmd = "source ~/.bashrc ; mv -f ~/rest-site.xml $REST_INSTALL_DIR/conf/"
     Execute(cmd,user=params.traf_user)
 
 
