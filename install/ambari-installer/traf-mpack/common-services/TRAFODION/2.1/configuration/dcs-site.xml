@@ -130,6 +130,52 @@
   </property>
 
   <property>
+    <name>dcs.server.user.program.statistics.interval.time</name>
+    <display-name>Aggragte Statistics Interval</display-name>
+    <value>60</value>
+    <description>
+        Time in seconds on how often the aggregation data should be published.
+        Setting this value to '0' will revert to default.
+        Setting this value to '-1' will disable publishing aggregation data.
+    </description>
+    <value-attributes>
+      <type>int</type>
+      <minimum>-1</minimum>
+      <unit>Seconds</unit>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.server.user.program.statistics.limit.time</name>
+    <display-name>Query Statistics Threshold</display-name>
+    <value>60</value>
+    <description>
+        Time in seconds for how long the query has been executing before publishing
+        statistics to metric_query_table. To publish all queries set this value to
+        '0'. Setting this value to '-1' will disable publishing any data to
+        metric_query_table.
+        The default is 60.
+        Warning - Setting this value to 0 will cause query performance to degrade
+    </description>
+    <value-attributes>
+      <type>int</type>
+      <minimum>-1</minimum>
+      <unit>Seconds</unit>
+    </value-attributes>
+  </property>
+  <property>
+    <name>dcs.server.user.program.statistics.enabled</name>
+    <display-name>Query statistics publication</display-name>
+    <value>true</value>
+    <description>
+        If statistics publication is enabled.
+    </description>
+    <value-attributes>
+       <type>boolean</type>
+    </value-attributes>
+  </property>
+
+
+  <property>
     <name>dcs.info.threads.max</name>
     <display-name>Info threads maximum</display-name>
     <value>100</value>
