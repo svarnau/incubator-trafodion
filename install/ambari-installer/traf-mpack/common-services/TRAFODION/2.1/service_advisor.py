@@ -155,11 +155,10 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     if cfg["traf.ldap.enabled"] == "YES" and cfg["traf.ldap.hosts"] == "":
           message = "LDAP authentication requires one or more LDAP servers"
           val_items.append({"config-name": "traf.ldap.hosts", "item": self.getErrorItem(message)})
-          items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
     if cfg["traf.ldap.encrypt"] != "0" and cfg["traf.ldap.certpath"] == "":
           message = "LDAP encryption requires a certificate file"
           val_items.append({"config-name": "traf.ldap.certpath", "item": self.getErrorItem(message)})
-          items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
+    items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
 
     val_items = []
     cfg = configurations["hbase-site"]["properties"]
