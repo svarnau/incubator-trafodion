@@ -39,10 +39,8 @@ def run():
     DCS_SRV_FILE = DCS_CONF_DIR + '/servers'
     DCS_MASTER_FILE = DCS_CONF_DIR + '/master'
     DCS_BKMASTER_FILE = DCS_CONF_DIR + '/backup-masters'
-    DCS_ENV_FILE = DCS_CONF_DIR + '/dcs-env.sh'
     DCS_SITE_FILE = DCS_CONF_DIR + '/dcs-site.xml'
     REST_SITE_FILE = '%s/rest-%s/conf/rest-site.xml' % (SQ_ROOT, TRAF_VER)
-    TRAFCI_FILE = SQ_ROOT + '/trafci/bin/trafci'
 
     ### dcs setting ###
     # servers
@@ -58,12 +56,6 @@ def run():
     # modify master
     dcs_master = nodes[0]
     append_file(DCS_MASTER_FILE, dcs_master)
-
-    # modify dcs-env.sh
-    mod_file(DCS_ENV_FILE, {'.*DCS_MANAGES_ZK=.*':'export DCS_MANAGES_ZK=false'})
-
-    # modify trafci
-    mod_file(TRAFCI_FILE, {'HNAME=.*':'HNAME=%s:23400' % dcs_master})
 
     # modify dcs-site.xml
     net_interface = cmd_output('netstat -rn | grep "^0.0.0.0" | awk \'{print $8}\'').strip()
