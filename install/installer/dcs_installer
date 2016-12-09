@@ -136,12 +136,6 @@ echo "***INFO: DCS Install Directory: $DCS_DIR"
 
 cd $DCS_DIR/conf
 
-echo "***INFO: modifying $DCS_DIR/conf/dcs-env.sh"
-rm dcs-env.temp 2>/dev/null
-cat dcs-env.sh | sed -e "s@#[ ]*export DCS_MANAGES_ZK=true@export DCS_MANAGES_ZK=false@" > dcs-env.temp
-cp dcs-env.temp dcs-env.sh
-rm dcs-env.temp 2>/dev/null
-
 
 echo "***INFO: modifying $DCS_DIR/conf/dcs-site.xml"
 
@@ -197,15 +191,8 @@ if [[ "$ENABLE_HA" == "true" ]]; then
        echo $node >> $DCS_DIR/conf/backup-masters
    done
   
-   ######Configure trafci wrapper script to use Floating IP address
-   newHName="HNAME=$FLOATING_IP:23400"
-   sed -i -e "s/HNAME=localhost:23400/$newHName/g" $TRAF_HOME/trafci/bin/trafci
- 
-else
-
-   ######Configure trafci wrapper script
-   newHName="HNAME=$DCS_PRIMARY_MASTER_NODE:23400"
-   sed -i -e "s/HNAME=localhost:23400/$newHName/g" $TRAF_HOME/trafci/bin/trafci
+   ######Configure dcs-env.sh
+   sed -i -e "s@DCS_MASTER_FLOATING_IP=.*\$@DCS_MASTER_FLOATING_IP=$FLOATING_IP" dcs-env.sh
 
 fi
 

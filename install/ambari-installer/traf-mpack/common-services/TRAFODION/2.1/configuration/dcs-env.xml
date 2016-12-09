@@ -136,6 +136,12 @@ export DCS_MANAGES_ZK=false
 
 # Tell DCS where the user program environment lives.
  export DCS_USER_PROGRAM_HOME=$MY_SQROOT
+
+# DCS master port (from dcs-site.xml)
+export DCS_MASTER_PORT={{dcs_master_port}}
+
+# DCS floating IP, if HA is enabled (from dcs-site.xml)
+export DCS_MASTER_FLOATING_IP="{{dcs_floating_ip}}"
     </value>
     <value-attributes>
       <type>content</type>
