@@ -18,8 +18,9 @@
 # under the License.
 #
 # @@@ END COPYRIGHT @@@
-import sys, os, pwd, signal, time
+import subprocess
 from resource_management import *
+from tempfile import TemporaryFile
 
 class DCS(Script):
   def install(self, env):
@@ -39,9 +40,16 @@ class DCS(Script):
     import params
     Execute('source ~/.bashrc ; sqcheck -f -c rest || reststart',user=params.traf_user)
 	
+  # Check master pidfile
   def status(self, env):
-    import params
-    Execute('source ~/.bashrc ; sqcheck -f -c dcs',user=params.traf_user)
+    import status_params
+    cmd = "source ~/.bashrc ; echo $(ls $DCS_INSTALL_DIR/tmp/dcs*master.pid)"
+    ofile = TemporaryFile()
+    Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile)
+    ofile.seek(0) # read from beginning
+    pidfile = ofile.read()
+    ofile.close()
+    check_process_status(pidfile)
 
 if __name__ == "__main__":
   DCS().execute()

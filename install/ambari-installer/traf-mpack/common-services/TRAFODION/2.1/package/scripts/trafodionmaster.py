@@ -147,18 +147,17 @@ class Master(Script):
     Execute(cmd,user=params.hdfs_user)
 
     # Start trafodion
-    Execute('source ~/.bashrc ; sqstart',user=params.traf_user)
+    Execute('source ~/.bashrc ; sqstart',user=params.traf_user,logoutput=True)
 	
-  #To get status of the, use the linux service status command      
   def status(self, env):
-    import params
-    Execute('source ~/.bashrc ; sqcheck -f',user=params.traf_user)
+    import status_params
+    Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=params.traf_user)
  
   def initialize(self, env):
     import params
     cmd = "source ~/.bashrc ; echo 'initialize Trafodion;' | sqlci"
     ofile = TemporaryFile()
-    Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile)
+    Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile,logoutput=True)
     ofile.seek(0) # read from beginning
     output = ofile.read()
     ofile.close()
@@ -167,7 +166,7 @@ class Master(Script):
       print output + '\n'
       print "Re-trying initialize as upgrade\n"
       cmd = "source ~/.bashrc ; echo 'initialize Trafodion, upgrade;' | sqlci"
-      Execute(cmd,user=params.traf_user)
+      Execute(cmd,user=params.traf_user,logoutput=True)
 
 
 if __name__ == "__main__":

@@ -112,6 +112,25 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     return items
  
   def getServiceConfigurationRecommendations(self, configurations, clusterSummary, services, hosts):
+    # Update DCS properties
+    if "dcs-site" in services["configurations"]:
+      dcs_site = services["configurations"]["dcs-site"]["properties"]
+      putDcsProperty = self.putProperty(configurations, "dcs-site", services)
+
+      cmd="netstat -rn | grep '^0.0.0.0' | awk '{print $8}'"
+      ofile = TemporaryFile()
+      try:
+        Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile,logoutput=True)
+        ofile.seek(0) # read from beginning
+        desired_value = ofile.read()
+      except:
+        desired_value = "default"
+      ofile.close()
+
+      property="dcs.dns.interface"
+      if property not in dcs_site or dcs_site[property] != desired_value:
+        putDcsSiteProperty(property, desired_value)
+
     # Update HBASE properties in hbase-site
     if "hbase-site" in services["configurations"]:
       hbase_site = services["configurations"]["hbase-site"]["properties"]
