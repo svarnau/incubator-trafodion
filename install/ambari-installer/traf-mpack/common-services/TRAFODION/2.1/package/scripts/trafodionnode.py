@@ -186,8 +186,8 @@ class Node(Script):
     return True
 	
   def status(self, env):
-    import params
-    Execute('source ~/.bashrc ; sqcheck -f',user=params.traf_user)
+    import status_params
+    Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=params.traf_user)
 
 if __name__ == "__main__":
   Node().execute()
