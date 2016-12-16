@@ -192,7 +192,7 @@ if [[ "$ENABLE_HA" == "true" ]]; then
    done
   
    ######Configure dcs-env.sh
-   sed -i -e "s@DCS_MASTER_FLOATING_IP=.*\$@DCS_MASTER_FLOATING_IP=$FLOATING_IP" dcs-env.sh
+   sed -i -e "s@DCS_MASTER_FLOATING_IP=.*\$@DCS_MASTER_FLOATING_IP=$FLOATING_IP@" dcs-env.sh
 
 fi
 
