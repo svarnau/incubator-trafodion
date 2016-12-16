@@ -66,7 +66,7 @@ node are part of the trafodion server RPM, and are located in core/sqf/sysinstal
 The trafodion user environment is set using ~trafodion/.bashrc, which sources in values set by the RPM
 installation, values set by the Ambari install, and values from the installed Trafodion software.
 
-* `/etc/trafodion/trafodion_config` - RPM sets the `SQ_HOME` value, which is location of Trafodion installation.
+* `/etc/trafodion/trafodion_config` - RPM sets the `TRAF_HOME` value, which is location of Trafodion installation.
 * `/etc/trafodion/conf/trafodion-env.sh` - user-specified values set by Ambari trafodion-node install step.
 * `/etc/trafodion/conf/traf-cluster-env.sh` - node list info set by Ambari install trafodion-master step.
 * `/home/trafodion/.../sqenv.sh` - various derived values.

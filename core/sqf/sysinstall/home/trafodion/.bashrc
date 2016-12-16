@@ -46,9 +46,9 @@ fi
 #-------------------------------------------
 PATH=".:$PATH"
 
-if [ -f $MY_SQROOT/sqenv.sh ]; then
+if [ -f $TRAF_HOME/sqenv.sh ]; then
         pushd . >/dev/null
-        cd $MY_SQROOT
+        cd $TRAF_HOME
         source ./sqenv.sh
         popd >/dev/null
         export MANPATH=$MANPATH:$MPI_ROOT/share/man

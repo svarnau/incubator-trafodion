@@ -74,7 +74,7 @@ class Master(Script):
          mode=0644)
 
     # install sqconfig
-    Execute('source ~/.bashrc ; mv -f ~/sqconfig $MY_SQROOT/sql/scripts/',user=params.traf_user)
+    Execute('source ~/.bashrc ; mv -f ~/sqconfig $TRAF_HOME/sql/scripts/',user=params.traf_user)
 
     # write cluster-env in trafodion home dir
     traf_nodes = ' '.join(loc_node_list)

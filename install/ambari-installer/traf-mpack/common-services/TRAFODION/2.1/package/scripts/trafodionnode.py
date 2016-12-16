@@ -74,7 +74,7 @@ class Node(Script):
          group = params.traf_group, 
          content="# place-holder",
          mode=0644)
-    # initialize & verify env (e.g., creates $SQROOT/tmp as trafodion user)
+    # initialize & verify env (e.g., creates $TRAF_HOME/tmp as trafodion user)
     cmd = "source ~/.bashrc"
     Execute(cmd,user=params.traf_user)
 
@@ -86,9 +86,9 @@ class Node(Script):
            group = params.traf_group, 
            content = InlineTemplate(params.traf_ldap_template),
            mode=0750)
-      cmd = "source ~/.bashrc ; mv -f ~/.traf_authentication_config $MY_SQROOT/sql/scripts/"
+      cmd = "source ~/.bashrc ; mv -f ~/.traf_authentication_config $TRAF_HOME/sql/scripts/"
       Execute(cmd,user=params.traf_user)
-      cmd = "source ~/.bashrc ; ldapconfigcheck -file $MY_SQROOT/sql/scripts/.traf_authentication_config"
+      cmd = "source ~/.bashrc ; ldapconfigcheck -file $TRAF_HOME/sql/scripts/.traf_authentication_config"
       Execute(cmd,user=params.traf_user)
       cmd = 'ldapcheck --verbose --username=%s' % traf_db_admin
       Execute(cmd,user=params.traf_user)
@@ -157,8 +157,8 @@ class Node(Script):
     ##################
     # Link TRX files into HBase lib dir
     hlib = "/usr/hdp/current/hbase-regionserver/lib/"
-    trx = "$MY_SQROOT/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
-    util = "$MY_SQROOT/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
+    trx = "$TRAF_HOME/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
+    util = "$TRAF_HOME/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
 
     cmd = "rm -f " + hlib + "hbase-trx-* " + hlib + "trafodion-utility-*"
     Execute(cmd)
