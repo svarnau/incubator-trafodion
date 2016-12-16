@@ -45,7 +45,7 @@ class DCS(Script):
     import status_params
     cmd = "source ~/.bashrc ; echo $(ls $DCS_INSTALL_DIR/tmp/dcs*master.pid)"
     ofile = TemporaryFile()
-    Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile)
+    Execute(cmd,user=status_params.traf_user,stdout=ofile,stderr=ofile)
     ofile.seek(0) # read from beginning
     pidfile = ofile.read()
     ofile.close()

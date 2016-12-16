@@ -154,7 +154,7 @@ class Master(Script):
 	
   def status(self, env):
     import status_params
-    Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=params.traf_user)
+    Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=status_params.traf_user)
  
   def initialize(self, env):
     import params
