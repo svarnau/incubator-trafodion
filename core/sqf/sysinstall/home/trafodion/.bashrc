@@ -31,8 +31,6 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-cd $HOME
-
 #-------------------------------------------
 # Execute the trafodion_config script
 #-------------------------------------------

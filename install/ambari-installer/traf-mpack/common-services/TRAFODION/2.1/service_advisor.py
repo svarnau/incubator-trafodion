@@ -121,7 +121,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
       cmd="netstat -rn | grep '^0.0.0.0' | awk '{print $8}'"
       ofile = TemporaryFile()
       try:
-        Execute(cmd,user=params.traf_user,stdout=ofile,stderr=ofile,logoutput=True)
+        Execute(cmd,stdout=ofile)
         ofile.seek(0) # read from beginning
         desired_value = ofile.read()
       except:

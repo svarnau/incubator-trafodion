@@ -18,7 +18,7 @@
 # under the License.
 #
 # @@@ END COPYRIGHT @@@
-import sys, os, subprocess
+import sys, os
 from resource_management import *
 from tempfile import TemporaryFile
 
