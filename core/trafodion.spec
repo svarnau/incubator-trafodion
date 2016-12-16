@@ -123,8 +123,9 @@ echo "source /etc/trafodion/conf/traf-cluster-env.sh" >> /etc/trafodion/trafodio
 /bin/rm -rf %{buildroot}
 
 %files
-/etc/sudoers.d/trafodion
+/etc/init.d/trafodion
 /etc/security/limits.d/trafodion.conf
+/etc/sudoers.d/trafodion
 %defattr(-,trafodion,trafodion)
 /home/trafodion/.bashrc
 /home/trafodion/%{name}-%{version}
