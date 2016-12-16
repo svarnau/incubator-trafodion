@@ -24,10 +24,13 @@ from tempfile import TemporaryFile
 
 class Master(Script):
   def install(self, env):
-    import params
   
     # Install packages listed in metainfo.xml
     self.install_packages(env)
+    self.configure(env)
+
+  def configure(self, env):
+    import params
 
     # generate sqconfig file
     cmd = "lscpu|grep -E '(^CPU\(s\)|^Socket\(s\))'|awk '{print $2}'"

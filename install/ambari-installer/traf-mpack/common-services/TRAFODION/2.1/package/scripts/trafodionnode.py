@@ -26,8 +26,12 @@ class Node(Script):
   
     # Install packages listed in metainfo.xml
     self.install_packages(env)
-    import params
   
+    self.configure(env)
+
+  def configure(self, env):
+    import params
+
     ##################
     # trafodion cluster-wide ssh config
     trafhome = os.path.expanduser("~" + params.traf_user)
@@ -35,12 +39,14 @@ class Node(Script):
               mode=0700,
               owner = params.traf_user, 
               group = params.traf_group)
+    # private key generated on ambari server
     File(os.path.join(trafhome,".ssh/id_rsa"),
          owner = params.traf_user, 
          group = params.traf_group, 
          content=params.traf_priv_key,
          mode=0600)
 
+    # generate public key from the private one
     cmd = "ssh-keygen -y -f " + trafhome + "/.ssh/id_rsa > " + trafhome + "/.ssh/authorized_keys"
     Execute(cmd,user=params.traf_user)
     cmd = "chmod 0600 " + trafhome + "/.ssh/authorized_keys"
