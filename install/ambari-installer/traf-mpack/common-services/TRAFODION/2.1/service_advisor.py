@@ -144,46 +144,51 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
   def getServiceConfigurationsValidationItems(self, configurations, recommendedDefaults, services, hosts):
     items = []
 
-    val_items = []
-    cfg = configurations["dcs-site"]["properties"]
-    if cfg["dcs.master.floating.ip"] == "true" and cfg["dcs.master.floating.ip.external.ip.address"] == "":
-          message = "DCS High Availability requires a Floating IP address"
-          val_items.append({"config-name": "dcs.master.floating.ip.external.ip.address", "item": self.getErrorItem(message)})
-          items.extend(self.toConfigurationValidationProblems(val_items, "dcs-site"))
+    if "dcs-site" in services["configurations"]:
+      val_items = []
+      cfg = configurations["dcs-site"]["properties"]
+      if cfg["dcs.master.floating.ip"] == "true" and cfg["dcs.master.floating.ip.external.ip.address"] == "":
+            message = "DCS High Availability requires a Floating IP address"
+            val_items.append({"config-name": "dcs.master.floating.ip.external.ip.address", "item": self.getErrorItem(message)})
+            items.extend(self.toConfigurationValidationProblems(val_items, "dcs-site"))
 
-    val_items = []
-    cfg = configurations["trafodion-env"]["properties"]
-    if cfg["traf.ldap.enabled"] == "YES" and cfg["traf.ldap.hosts"] == "":
-          message = "LDAP authentication requires one or more LDAP servers"
-          val_items.append({"config-name": "traf.ldap.hosts", "item": self.getErrorItem(message)})
-    if cfg["traf.ldap.encrypt"] != "0" and cfg["traf.ldap.certpath"] == "":
-          message = "LDAP encryption requires a certificate file"
-          val_items.append({"config-name": "traf.ldap.certpath", "item": self.getErrorItem(message)})
-    items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
+    if "trafodion-env" in services["configurations"]:
+      val_items = []
+      cfg = configurations["trafodion-env"]["properties"]
+      if cfg["traf.ldap.enabled"] == "YES" and cfg["traf.ldap.hosts"] == "":
+            message = "LDAP authentication requires one or more LDAP servers"
+            val_items.append({"config-name": "traf.ldap.hosts", "item": self.getErrorItem(message)})
+      if cfg["traf.ldap.encrypt"] != "0" and cfg["traf.ldap.certpath"] == "":
+            message = "LDAP encryption requires a certificate file"
+            val_items.append({"config-name": "traf.ldap.certpath", "item": self.getErrorItem(message)})
+      items.extend(self.toConfigurationValidationProblems(val_items, "trafodion-env"))
 
-    val_items = []
-    cfg = configurations["hbase-site"]["properties"]
-    for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
-       if property not in cfg or cfg[property] != desired_value:
-          message = "Trafodion recommends value of " + desired_value
-          val_items.append({"config-name": property, "item": self.getWarnItem(message)})
-    items.extend(self.toConfigurationValidationProblems(val_items, "hbase-site"))
+    if "hbase-site" in services["configurations"]:
+      val_items = []
+      cfg = configurations["hbase-site"]["properties"]
+      for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
+         if property not in cfg or cfg[property] != desired_value:
+            message = "Trafodion recommends value of " + desired_value
+            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+      items.extend(self.toConfigurationValidationProblems(val_items, "hbase-site"))
 
-    val_items = []
-    cfg = configurations["hdfs-site"]["properties"]
-    for property, desired_value in self.getHdfsSiteDesiredValues().iteritems():
-       if property not in cfg or cfg[property] != desired_value:
-          message = "Trafodion recommends value of " + desired_value
-          val_items.append({"config-name": property, "item": self.getWarnItem(message)})
-    items.extend(self.toConfigurationValidationProblems(val_items, "hdfs-site"))
+    if "hdfs-site" in services["configurations"]:
+      val_items = []
+      cfg = configurations["hdfs-site"]["properties"]
+      for property, desired_value in self.getHdfsSiteDesiredValues().iteritems():
+         if property not in cfg or cfg[property] != desired_value:
+            message = "Trafodion recommends value of " + desired_value
+            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+      items.extend(self.toConfigurationValidationProblems(val_items, "hdfs-site"))
 
-    val_items = []
-    cfg = configurations["zoo.cfg"]["properties"]
-    for property, desired_value in self.getZooCfgDesiredValues().iteritems():
-       if property not in cfg or cfg[property] != desired_value:
-          message = "Trafodion recommends value of " + desired_value
-          val_items.append({"config-name": property, "item": self.getWarnItem(message)})
-    items.extend(self.toConfigurationValidationProblems(val_items, "zoo.cfg"))
+    if "zoo.cfg" in services["configurations"]:
+      val_items = []
+      cfg = configurations["zoo.cfg"]["properties"]
+      for property, desired_value in self.getZooCfgDesiredValues().iteritems():
+         if property not in cfg or cfg[property] != desired_value:
+            message = "Trafodion recommends value of " + desired_value
+            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+      items.extend(self.toConfigurationValidationProblems(val_items, "zoo.cfg"))
 
     return items
 
