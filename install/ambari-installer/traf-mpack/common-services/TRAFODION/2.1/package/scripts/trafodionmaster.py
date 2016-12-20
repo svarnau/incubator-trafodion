@@ -116,6 +116,7 @@ class Master(Script):
   #To start the service, use the linux service start command and pipe output to log file      
   def start(self, env):
     import params
+    self.configure(env)
 
     # Check HDFS set up
     # Must be in start section, since we need HDFS running

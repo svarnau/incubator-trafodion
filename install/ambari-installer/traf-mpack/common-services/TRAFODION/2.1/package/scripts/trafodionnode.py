@@ -166,13 +166,10 @@ class Node(Script):
     trx = "$TRAF_HOME/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
     util = "$TRAF_HOME/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
 
-    cmd = "rm -f " + hlib + "hbase-trx-* " + hlib + "trafodion-utility-*"
-    Execute(cmd)
-
     # run as root, but expand variables using trafodion env
-    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -s " + trx + " " + hlib
+    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -f -s " + trx + " " + hlib
     Execute(cmd)
-    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -s " + util + " " + hlib
+    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -f -s " + util + " " + hlib
     Execute(cmd)
 
     ##################
@@ -185,14 +182,25 @@ class Node(Script):
                 create_parents = True)
  
 
+  # Master component does real stop/start for cluster, 
+  #   but for ambari restart, provide expected status
   def stop(self, env):
+    import status_params
+    Execute('touch ~/ambari_node_stop',user=status_params.traf_user)
     return True
 
   def start(self, env):
+    import status_params
+    Execute('rm -f ~/ambari_node_stop',user=status_params.traf_user)
+    self.configure(env)
     return True
 
   def status(self, env):
     import status_params
+    try:
+      Execute('ls ~/ambari_node_stop && exit 1 || exit 0',user=status_params.traf_user)
+    except:
+      raise ComponentIsNotRunning()
     try:
       Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=status_params.traf_user)
     except:

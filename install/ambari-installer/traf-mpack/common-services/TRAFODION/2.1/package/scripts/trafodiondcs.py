@@ -45,7 +45,11 @@ class DCS(Script):
     import status_params
     cmd = "source ~%s/.bashrc >/dev/null 2>&1; ls $DCS_INSTALL_DIR/tmp/dcs*master.pid" % status_params.traf_user
     ofile = TemporaryFile()
-    Execute(cmd,stdout=ofile) # cannot switch user in status mode for some reason
+    try:
+      Execute(cmd,stdout=ofile) # cannot switch user in status mode for some reason
+    except:
+      ofile.close()
+      raise ComponentIsNotRunning()
     ofile.seek(0) # read from beginning
     pidfile = ofile.read().rstrip()
     ofile.close()
