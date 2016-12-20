@@ -82,8 +82,17 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
     regionHosts = self.getHosts(componentsList, "HBASE_REGIONSERVER")
     hiveHosts = self.getHosts(componentsList, "HIVE_CLIENT")
     dataHosts = self.getHosts(componentsList, "DATANODE")
+    trafmasHosts = self.getHosts(componentsList, "TRAF_MASTER")
 
     items = []
+
+    # Generate WARNING if any TRAF_NODE is not colocated with a TRAF_MASTER
+    mismatchHosts = sorted(set(trafNodeHosts).symmetric_difference(set(trafmasHosts)))
+    if len(mismatchHosts) > 0:
+      hostsString = ', '.join(mismatchHosts)
+      message = "Trafodion Nodes should be co-located with Trafodion Masters. " \
+                "{0} host(s) do not satisfy the colocation recommendation: {1}".format(len(mismatchHosts), hostsString)
+      items.append( { "type": 'host-component', "level": 'WARN', "message": message, "component-name": 'TRAF_NODE' } )
 
     # Generate WARNING if any TRAF_NODE is not colocated with a DATANODE
     mismatchHosts = sorted(set(trafNodeHosts).symmetric_difference(set(dataHosts)))

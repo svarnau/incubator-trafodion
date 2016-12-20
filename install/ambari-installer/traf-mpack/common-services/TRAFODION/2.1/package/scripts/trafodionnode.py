@@ -190,10 +190,13 @@ class Node(Script):
 
   def start(self, env):
     return True
-	
+
   def status(self, env):
     import status_params
-    Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=status_params.traf_user)
+    try:
+      Execute('source ~/.bashrc ; sqshell -c node info | grep $(hostname) | grep -q Up',user=status_params.traf_user)
+    except:
+      raise ComponentIsNotRunning()
 
 if __name__ == "__main__":
   Node().execute()
