@@ -68,6 +68,8 @@ ldap_pwd = config['configurations']['trafodion-env']['traf.ldap.pwd']
 ldap_encrypt = config['configurations']['trafodion-env']['traf.ldap.encrypt']
 ldap_certpath = config['configurations']['trafodion-env']['traf.ldap.certpath']
 
+hdfs_acls_enabled = config['configurations']['hdfs-site']['dfs.namenode.acls.enabled']
+
 #HDFS Dir creation
 hostname = config["hostname"]
 hadoop_conf_dir = "/etc/hadoop/conf"
