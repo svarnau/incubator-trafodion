@@ -33,12 +33,13 @@ class DCS(Script):
 
   def stop(self, env):
     import params
-    Execute('source ~/.bashrc ; reststop',user=params.traf_user)
+    Execute('source ~/.bashrc ; dcsstop',user=params.traf_user)
 
   # REST should run on all DCS backup and master nodes
   def start(self, env):
     import params
     Execute('source ~/.bashrc ; sqcheck -f -c rest || reststart',user=params.traf_user)
+    Execute('source ~/.bashrc ; dcsstart',user=params.traf_user)
 	
   # Check master pidfile
   def status(self, env):
