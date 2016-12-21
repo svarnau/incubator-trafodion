@@ -146,11 +146,12 @@ class Master(Script):
                          group=params.traf_group,
                         )
     params.HdfsDirectory(None, action="execute")
-    if params.hdfs_acls_enabled == True:
+
+    try:
       cmd = "hdfs dfs -setfacl -R -m user:%s:rwx,default:user:%s:rwx,mask::rwx /hbase/archive" % \
                (params.traf_user, params.traf_user)
       Execute(cmd,user=params.hdfs_user)
-    else:
+    except:
       print "Error: HDFS ACLs must be enabled for config of hdfs:/hbase/archive"
       print "       Re-start HDFS, HBase, and other affected components before starting Trafodion"
       raise Fail("Need HDFS component re-start")
