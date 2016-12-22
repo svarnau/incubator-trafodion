@@ -47,7 +47,9 @@ class Node(Script):
          mode=0600)
 
     # generate public key from the private one
-    cmd = "ssh-keygen -y -f " + trafhome + "/.ssh/id_rsa > " + trafhome + "/.ssh/authorized_keys"
+    cmd = "ssh-keygen -y -f " + trafhome + "/.ssh/id_rsa > " + trafhome + "/.ssh/id_rsa.pub"
+    Execute(cmd,user=params.traf_user)
+    cmd = "cat " + trafhome + "/.ssh/id_rsa >> " + trafhome + "/.ssh/authorized_keys"
     Execute(cmd,user=params.traf_user)
     cmd = "chmod 0600 " + trafhome + "/.ssh/authorized_keys"
     Execute(cmd,user=params.traf_user)
@@ -58,6 +60,12 @@ class Node(Script):
          content=sshopt,
          mode=0600)
 
+    # env files use java_home, be sure we are on 1.8 
+    # might be better to check this earlier (in service_advisor.py)
+    if params.java_version < 8:
+      print "Error: Java 1.8 required for Trafodion and HBase"
+      print "       Use 'ambari setup' to change JDK and restart HBase before continuing"
+      exit(1)
     ##################
     # create env files
     env.set_params(params)
