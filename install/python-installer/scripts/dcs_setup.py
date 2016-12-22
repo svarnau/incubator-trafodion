@@ -26,7 +26,8 @@
 import os
 import sys
 import json
-from common import ParseXML, append_file, write_file, mod_file, cmd_output, run_cmd, err
+from common import append_file, write_file, mod_file, cmd_output, run_cmd, \
+                   ParseInI, ParseXML, DEF_PORT_FILE, err
 
 def run():
     dbcfgs = json.loads(dbcfgs_json)
@@ -58,7 +59,7 @@ def run():
     append_file(DCS_MASTER_FILE, dcs_master)
 
     # modify dcs-site.xml
-    net_interface = cmd_output('netstat -rn | grep "^0.0.0.0" | awk \'{print $8}\'').strip()
+    net_interface = run_cmd('ip route |grep default|awk \'{print $5}\'')
     hb = ParseXML(HBASE_XML_FILE)
     zk_hosts = hb.get_property('hbase.zookeeper.quorum')
     zk_port = hb.get_property('hbase.zookeeper.property.clientPort')

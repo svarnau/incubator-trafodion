@@ -3322,6 +3322,9 @@ XDDkwd__(SUBQUERY_UNNESTING,			"ON"),
  
   DDkwd__(TRAF_ENABLE_ORC_FORMAT,                 "OFF"),   
 
+  DDkwd__(TRAF_HBASE_MAPPED_TABLES,             "ON"),   
+  DDkwd__(TRAF_HBASE_MAPPED_TABLES_IUD,         "OFF"),   
+
   DDkwd__(TRAF_INDEX_ALIGNED_ROW_FORMAT,        "ON"),   
   DDkwd__(TRAF_INDEX_CREATE_OPT,          "OFF"),
 
@@ -3331,7 +3334,7 @@ XDDkwd__(SUBQUERY_UNNESTING,			"ON"),
   DDkwd__(TRAF_LOAD_CONTINUE_ON_ERROR,          "OFF"),
   DD_____(TRAF_LOAD_ERROR_COUNT_ID,             "" ),
   DD_____(TRAF_LOAD_ERROR_COUNT_TABLE,          "ERRORCOUNTER" ),
-  DD_____(TRAF_LOAD_ERROR_LOGGING_LOCATION,     "/bulkload/logs/" ),
+  DD_____(TRAF_LOAD_ERROR_LOGGING_LOCATION,     "/bulkload/logs" ),
   DDint__(TRAF_LOAD_FLUSH_SIZE_IN_KB,           "1024"),
   DDkwd__(TRAF_LOAD_FORCE_CIF,                  "ON"),
   DDkwd__(TRAF_LOAD_LOG_ERROR_ROWS,             "OFF"),

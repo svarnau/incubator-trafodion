@@ -1,4 +1,5 @@
-#! /bin/sh
+#!/usr/bin/env python
+
 # @@@ START COPYRIGHT @@@
 #
 # Licensed to the Apache Software Foundation (ASF) under one
@@ -20,19 +21,30 @@
 #
 # @@@ END COPYRIGHT @@@
 
+## This script should be run on all nodes with trafodion user ##
 
-fil=$1
-if [ "$fil" = "" ]; then
-  echo "Usage: $0 filename"
-  exit 1
-fi
+import sys
+import json
+from common import run_cmd, err
 
-sed "
-s/Logging Location:.*/Loggin Location:@loggingLocation@/
-s/Time:.*/Time:@time@/
-s/snapshot_temp_location.*/snapshot_temp_location location/g
-s/\(778224\).*\(778224\)\(.*\)/\1\3/g
-s/\(78431\).*\(78431\)\(.*\)/\1\3/g
-/^org\.apache\.hadoop/d
-/^org\.trafodion/d
-" $fil
+def run():
+    dbcfgs = json.loads(dbcfgs_json)
+
+    TRAF_DIRNAME = dbcfgs['traf_dirname']
+
+    # untar traf package, package comes from copy_files.py
+    TRAF_PACKAGE_FILE = '/tmp/' + dbcfgs['traf_package'].split('/')[-1]
+    run_cmd('mkdir -p ~/%s' % TRAF_DIRNAME)
+    run_cmd('tar xf %s -C ~/%s' % (TRAF_PACKAGE_FILE, TRAF_DIRNAME))
+
+    # copy dbcfgs file
+    run_cmd('cp -rf /tmp/dbcfgs ~/.dbcfgs')
+
+    print 'Trafodion package extracted successfully!'
+
+# main
+try:
+    dbcfgs_json = sys.argv[1]
+except IndexError:
+    err('No db config found')
+run()
