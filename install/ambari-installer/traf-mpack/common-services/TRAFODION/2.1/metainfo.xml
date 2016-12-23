@@ -57,7 +57,6 @@
                   <customCommands>
                     <customCommand>
                       <name>Initialize</name>
-                      <displayName>Initialize/Upgrade MetaData</displayName>
                       <commandScript>
                         <script>scripts/trafodionmaster.py</script>
                         <scriptType>PYTHON</scriptType>
