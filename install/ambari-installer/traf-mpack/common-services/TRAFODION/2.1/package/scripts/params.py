@@ -52,6 +52,7 @@ traf_user = 'trafodion'
 traf_group = 'trafodion'
 hdfs_user = config['configurations']['hadoop-env']['hdfs_user']
 hbase_user = config['configurations']['hbase-env']['hbase_user']
+hbase_staging = config['configurations']['hbase-site']['hbase.bulkload.staging.dir']
 
 traf_priv_key = config['configurations']['trafodion-env']['traf.sshkey.priv']
 

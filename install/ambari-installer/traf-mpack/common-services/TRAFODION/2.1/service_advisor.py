@@ -126,8 +126,23 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
       putHbaseSiteProperty = self.putProperty(configurations, "hbase-site", services)
 
       for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
-        if property not in hbase_site or hbase_site[property] != desired_value:
+        if property not in hbase_site:
           putHbaseSiteProperty(property, desired_value)
+        elif hbase_site[property] != desired_value:
+          if property == "hbase.bulkload.staging.dir":
+             # don't modify unless it is empty
+             if cfg[property] == '':
+                putHbaseSiteProperty(property, desired_value)
+          elif property == "hbase.coprocessor.region.classes":
+             if cfg[property].find(desired_value) == -1:
+               # append to classpath
+               if cfg[property] == '':
+                 putHbaseSiteProperty(property, desired_value)
+               else:
+                 putHbaseSiteProperty(property, cfg[property] + ':' + desired_value)
+          # for any other property, modify regardless
+          else:
+             putHbaseSiteProperty(property, desired_value)
 
    # Update HDFS properties in hdfs-site
     if "hdfs-site" in services["configurations"]:
@@ -174,7 +189,18 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
       val_items = []
       cfg = configurations["hbase-site"]["properties"]
       for property, desired_value in self.getHbaseSiteDesiredValues().iteritems():
-         if property not in cfg or cfg[property] != desired_value:
+         if property not in cfg:
+            message = "Trafodion recommends value of " + desired_value
+            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+         # use any staging dir, but complain if there is none
+         elif property == "hbase.bulkload.staging.dir" and cfg[property] == '':
+            message = "Trafodion recommends value of " + desired_value
+            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+         # check for substring of classpath
+         elif property == "hbase.coprocessor.region.classes" and cfg[property].find(desired_value) == -1:
+            message = "Trafodion requires inclusion of " + desired_value
+            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+         elif cfg[property] != desired_value:
             message = "Trafodion recommends value of " + desired_value
             val_items.append({"config-name": property, "item": self.getWarnItem(message)})
       items.extend(self.toConfigurationValidationProblems(val_items, "hbase-site"))

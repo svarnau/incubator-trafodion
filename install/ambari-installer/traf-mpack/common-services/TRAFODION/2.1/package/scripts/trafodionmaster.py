@@ -125,7 +125,7 @@ class Master(Script):
                          owner=params.hbase_user,
                          group=params.hbase_user,
                         )
-    params.HdfsDirectory("/hbase-staging",
+    params.HdfsDirectory(params.hbase_staging,
                          action="create_on_execute",
                          owner=params.hbase_user,
                          group=params.hbase_user,
