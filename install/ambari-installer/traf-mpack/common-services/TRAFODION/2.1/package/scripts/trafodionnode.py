@@ -33,18 +33,6 @@ class Node(Script):
     import params
 
     ##################
-    # Link TRX files into HBase lib dir
-    hlib = "/usr/hdp/current/hbase-regionserver/lib/"
-    trx = "$TRAF_HOME/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
-    util = "$TRAF_HOME/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
-
-    # run as root, but expand variables using trafodion env
-    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -f -s " + trx + " " + hlib
-    Execute(cmd)
-    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -f -s " + util + " " + hlib
-    Execute(cmd)
-
-    ##################
     # trafodion cluster-wide ssh config
     trafhome = os.path.expanduser("~" + params.traf_user)
     Directory(os.path.join(trafhome,".ssh"), 
@@ -104,6 +92,20 @@ class Node(Script):
     cmd = "source ~/.bashrc"
     Execute(cmd,user=params.traf_user)
 
+    ##################
+    # Link TRX files into HBase lib dir
+    hlib = "/usr/hdp/current/hbase-regionserver/lib/"
+    trx = "$TRAF_HOME/export/lib/hbase-trx-hdp2_3-${TRAFODION_VER}.jar"
+    util = "$TRAF_HOME/export/lib/trafodion-utility-${TRAFODION_VER}.jar"
+
+    # run as root, but expand variables using trafodion env
+    # must be after trafodion user already initializes bashrc
+    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -f -s " + trx + " " + hlib
+    Execute(cmd)
+    cmd = "source ~" + params.traf_user + "/.bashrc ; ln -f -s " + util + " " + hlib
+    Execute(cmd)
+
+    ##################
     # LDAP config
     # In future, should move to traf_conf_dir
     if params.traf_ldap_enabled == 'YES':
@@ -119,6 +121,7 @@ class Node(Script):
       cmd = 'ldapcheck --verbose --username=%s' % traf_db_admin
       Execute(cmd,user=params.traf_user)
 
+    ##################
     # All Trafodion Nodes need DCS config files
     # In future, should move DCS conf to traf_conf_dir
     File(os.path.join(trafhome,"dcs-env.sh"),
