@@ -131,15 +131,15 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
         elif hbase_site[property] != desired_value:
           if property == "hbase.bulkload.staging.dir":
              # don't modify unless it is empty
-             if cfg[property] == '':
+             if hbase_site[property] == '':
                 putHbaseSiteProperty(property, desired_value)
           elif property == "hbase.coprocessor.region.classes":
-             if cfg[property].find(desired_value) == -1:
+             if hbase_site[property].find(desired_value) == -1:
                # append to classpath
-               if cfg[property] == '':
+               if hbase_site[property] == '':
                  putHbaseSiteProperty(property, desired_value)
                else:
-                 putHbaseSiteProperty(property, cfg[property] + ':' + desired_value)
+                 putHbaseSiteProperty(property, hbase_site[property] + ',' + desired_value)
           # for any other property, modify regardless
           else:
              putHbaseSiteProperty(property, desired_value)
@@ -193,13 +193,15 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
             message = "Trafodion recommends value of " + desired_value
             val_items.append({"config-name": property, "item": self.getWarnItem(message)})
          # use any staging dir, but complain if there is none
-         elif property == "hbase.bulkload.staging.dir" and cfg[property] == '':
-            message = "Trafodion recommends value of " + desired_value
-            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+         elif property == "hbase.bulkload.staging.dir":
+            if cfg[property] == '':
+               message = "Trafodion recommends value of " + desired_value
+               val_items.append({"config-name": property, "item": self.getWarnItem(message)})
          # check for substring of classpath
-         elif property == "hbase.coprocessor.region.classes" and cfg[property].find(desired_value) == -1:
-            message = "Trafodion requires inclusion of " + desired_value
-            val_items.append({"config-name": property, "item": self.getWarnItem(message)})
+         elif property == "hbase.coprocessor.region.classes":
+            if cfg[property].find(desired_value) == -1:
+               message = "Trafodion requires inclusion of Trx files in region classpath\nReset to recommended value"
+               val_items.append({"config-name": property, "item": self.getErrorItem(message)})
          elif cfg[property] != desired_value:
             message = "Trafodion recommends value of " + desired_value
             val_items.append({"config-name": property, "item": self.getWarnItem(message)})
@@ -234,7 +236,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
         "hbase.hregion.impl": "org.apache.hadoop.hbase.regionserver.transactional.TransactionalRegion",
         "hbase.regionserver.region.split.policy": "org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy",
         "hbase.snapshot.enabled": "true",
-        "hbase.bulkload.staging.dir": "/hbase-staging",
+        "hbase.bulkload.staging.dir": "/apps/hbase/staging",
         "hbase.regionserver.region.transactional.tlog": "true",
         "hbase.snapshot.region.timeout": "600000",
         "hbase.client.scanner.timeout.period": "600000"
