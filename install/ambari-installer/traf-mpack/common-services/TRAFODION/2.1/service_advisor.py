@@ -200,7 +200,7 @@ class TRAFODION21ServiceAdvisor(service_advisor.DefaultStackAdvisor):
          # check for substring of classpath
          elif property == "hbase.coprocessor.region.classes":
             if cfg[property].find(desired_value) == -1:
-               message = "Trafodion requires inclusion of Trx files in region classpath\nReset to recommended value"
+               message = "Trafodion requires addition to region classpath. Go to HBase Advanced Configs, hbase-site section and select recommended value for this property."
                val_items.append({"config-name": property, "item": self.getErrorItem(message)})
          elif cfg[property] != desired_value:
             message = "Trafodion recommends value of " + desired_value
